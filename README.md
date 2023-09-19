@@ -1,4 +1,4 @@
-![alt text]([http://url/to/img.png](https://github.com/Knerlab/lab_webpage/blob/main/staticFiles/assets/AIL_logo.png))
+![alt text]([staticFiles/assets/AIL_logo.png))
 # lab_webpage
 Homepage for KnerLab
 
