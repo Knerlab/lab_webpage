@@ -1,4 +1,4 @@
-![alt text]([https://github.com/Knerlab/lab_webpage/blob/2ba5515611254e79b04d05b43ced6ef8f6342ebb/staticFiles/assets/AIL_logo.png]))
+![plot](staticFiles/assets/AIL_logo.png)
 # lab_webpage
 Homepage for KnerLab
 
