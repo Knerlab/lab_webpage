@@ -1,0 +1,328 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+/*-----------------Global Styles----------------*/
+body{
+    font-family: 'Open Sans',sans-serif;
+    margin: 0;
+    /* background: rgb(242, 239, 239); */
+    background: rgb(0, 0, 0);
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'helvetica';
+}
+
+
+/*-----------------Header----------------*/
+
+header {
+    background-color: black;
+    height: 80px;
+    width: 100%;
+    position: relative;
+}
+
+header h1{
+    color: white;
+    position: absolute;
+    left: 120px;
+    top: 0;
+    line-height: 140px;
+    /* width: 1px; */
+    text-indent: -9999px;
+}
+
+header img {
+    width: 250px;
+    position: absolute;
+    left: 20vw;
+    top: 22px;
+}
+
+header ul{
+    position: absolute;
+    right: 20vw;
+    top: 0;
+    line-height: 135px;
+}
+
+header a{
+    color: white;
+    text-decoration: None;
+}
+
+header a:hover{
+    color: rgb(60, 174, 113);
+    transition: 0.5s;
+} 
+
+header li {
+    display: inline-block;
+    margin-right: 2vw;
+}
+
+
+/* section1 */
+
+.homeBanner {
+    display: flex;
+    height: 720px;
+    background-image: url(/staticFiles/assets/Anthonie_van_Leeuwenhoek_profile.png);
+    background-repeat: no-repeat;
+    background-size: 1200px 700px;
+    /* background-size: cover; */
+    background-position: center;
+
+    
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+}
+
+.homeBanner blockquote{
+    color:white;
+    font-family: 'caveat', cursive;
+    font-weight: 400;
+    font-size: 20pt;
+}
+
+blockquote p{
+    position: relative;
+    left: -230px;
+    top: -20px;
+}
+
+/* ----------- section2 ----------- */
+.labIntro {
+    display: flex;
+    height: 200px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+}
+
+.labIntro blockquote{
+    color:white;
+    font-family: 'helvetica';
+    font-weight: 100;
+    font-size: 20pt;
+}
+
+.labIntro blockquote p{
+    position: relative;
+    top: 50px;
+    left: 0px;
+}
+/* ----------- section3 ----------- */
+
+.homeNews{
+    top: 50px;
+    height: 500px;
+    background-color: rgb(0, 0, 0);
+
+}
+
+.text{
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    top: 100px;
+    overflow: hidden;
+    font-size: 21px;
+    color: #ffffff;
+}
+.text::before,.text::after{
+    content: '';
+    display: inline-block;
+    width: 23%;
+    height: 1px;
+    position: absolute;
+    background: rgb(60, 174, 113);
+    top: 50%;
+}
+.text::before{
+    margin-left: -10px;
+    transform: translateX(-100%);
+}
+.text::after{
+    margin-left: 10px;
+}
+
+
+
+.homeNews .gallery{
+    width: 940px;
+    display: flex;
+    overflow-x: scroll;
+    padding: 20px;
+}
+
+.homeNews .gallery div{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 20px;
+    padding: 10px;
+    flex: none;
+}
+
+.homeNews .gallery img{
+    width: 300px;
+    height: 310px;
+    border-radius: 8%;
+}
+
+.gallery::-webkit-scrollbar{
+    display: none;
+}
+
+.gallery-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px auto;
+    padding: 5%;
+}
+
+#backBtn, #nextBtn{
+    width: 30px;
+    cursor: pointer;
+    margin: 30px;
+    color: white;
+}
+
+.gallery-wrap a{
+    font-size: xx-large;
+}
+
+#backBtn:hover , #nextBtn:hover{
+    transition: 0.4s;
+    color: rgb(60, 174, 113);
+}
+
+.gallery div img:hover{
+    cursor: pointer;
+    transform: scale(1.1);
+    transition: 0.5s;
+}
+
+
+/* footer */
+footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #000000;
+    margin: 50px;
+    width: 100%;
+}
+
+.footerWraper1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footerWraper1 .text1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 80px;
+
+}
+
+.footerWraper1 p{
+    font-size: 25pt;
+    color: #ffffff;
+    padding-right: 20px;
+
+}
+
+.footerWraper1 .contact-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1% 1%;
+    padding: 50px 0;
+}
+
+
+.footerWraper1 .contact-buttons img{
+    width: 50px;
+    height: 50px;
+    border-radius:50%;
+    border: white solid 1px;
+}
+
+.contact-buttons div{
+    width: max-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+
+}
+
+.contact-buttons div p{
+    font-size: 10pt;
+    padding-left: 10px;
+    width: max-content;
+}
+
+.ins-pic{
+    background-color: white;
+}
+
+
+
+
+.footerWraper2{
+    position: relative;
+    left: -20px;
+    top: -50px;
+    padding: 0;
+    border: 0;
+    margin: 0;
+}
+
+#progress-bar-container {
+
+	width: 750px;
+	height: 1px;
+	margin: 0 auto;
+	position: relative;
+	top: 0%;
+	/* transform: translateY(-50%); */
+	border-radius: 0px;
+	overflow: hidden;
+}
+
+.progress-bar-child {
+	width: 100%;
+	height: 100%;
+}
+
+.progress {
+	color: white;
+	text-align: center;
+	line-height: 75px;
+	/* font-size: 35px; */
+	font-family: "Segoe UI";
+	animation-direction: reverse;
+	background: #e5405e;
+
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right, #3fffa2 0%, #ffdb3a 45%, #3fffa2 100%);
+}
+
+
+footer .copyright{
+    position: relative;
+    top: -40px;
+}
+
+footer .copyright p{
+    color: #636363;
+}
