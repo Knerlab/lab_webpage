@@ -242,7 +242,7 @@ blockquote p{
 {
     text-decoration: none;
     color: #ffffff;
-    font-size: x-large;
+    font-size: large;
     word-wrap: break-word;
 
 }
@@ -251,8 +251,9 @@ blockquote p{
 {
     text-decoration: none;
     color: #c6c6c6;
-    font-size: large;
+    font-size: small;
     word-wrap: break-word;
+    padding: 10px 0px;
 
 }
 
@@ -291,7 +292,7 @@ footer{
     flex-direction: column;
     align-items: center;
     background-color: #000000;
-    margin: 50px;
+    /* margin: 50px; */
     width: 100%;
 }
 
@@ -299,6 +300,8 @@ footer{
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100px;
+    margin-top: 50px;
 }
 
 .footerWraper1 .text1{
@@ -357,7 +360,7 @@ footer{
 .footerWraper2{
     position: relative;
     left: -20px;
-    top: -50px;
+    top: -15px;
     padding: 0;
     border: 0;
     margin: 0;
@@ -394,11 +397,30 @@ footer{
 }
 
 
-footer .copyright{
-    position: relative;
-    top: -40px;
+footer .footerWraper3{
+    display: flex;
+    align-items: center;
+    width: 750px;
 }
 
-footer .copyright p{
+footer .footerWraper3 .uni-info img{
+    width: 300px;
+    /* height: 200px; */
+}
+
+footer .footerWraper3 .uni-info{
+    position: relative;
+    top: -8px;
+    left: -20px;
+}
+
+footer .footerWraper3 .copyright{
+    position: relative;
+    top: -10px;
+    right: -90px;
+}
+
+footer .footerWraper3 .copyright p{
     color: #636363;
+    text-align: right;
 }
