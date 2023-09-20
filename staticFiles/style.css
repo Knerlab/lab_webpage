@@ -153,6 +153,10 @@ blockquote p{
 
 
 
+.homeNews{
+    padding-bottom: 10%;
+}
+
 .homeNews .gallery{
     width: 940px;
     display: flex;
@@ -160,7 +164,8 @@ blockquote p{
     padding: 20px;
 }
 
-.homeNews .gallery div{
+.homeNews .gallery .gallery-group
+{
     display: grid;
     grid-template-columns: auto auto auto;
     grid-gap: 20px;
@@ -170,21 +175,92 @@ blockquote p{
 
 .homeNews .gallery img{
     width: 300px;
-    height: 310px;
-    border-radius: 8%;
+    height: 169px;
 }
 
-.gallery::-webkit-scrollbar{
-    display: none;
-}
-
-.gallery-wrap{
+.homeNews .gallery-wrap{
     display: flex;
+    height: auto;
     align-items: center;
     justify-content: center;
     margin: 50px auto;
     padding: 5%;
 }
+
+
+
+.homeNews .gallery-wrap .gallery .gallery-group .gallery-group-n
+{
+    display: flex;
+    width: 300px;
+    height: 450px;
+    flex-direction: column;    
+    /* justify-content: center; */
+    align-items: center;
+    /* border: 1px solid rgb(60, 174, 113); */
+    border: 1px solid rgb(52, 155, 100);
+    padding: 0;
+    margin: 0;
+}
+
+.homeNews .gallery-wrap .gallery .gallery-group a
+{
+    text-decoration: none;
+}
+
+.homeNews .gallery-wrap .gallery .gallery-group .gallery-group-n .img{
+    width: 300px;
+    height: 169px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+.homeNews .gallery-wrap .gallery .gallery-group .gallery-group-n .tag
+{
+    width: 300px;
+    height: auto;
+    background-color: #000000;
+    color: white;
+    border: 1px rgb(52, 155, 100) solid;
+
+}
+
+.homeNews .gallery-wrap .gallery .gallery-group .gallery-group-n .tag p
+{
+    font-size: medium;
+    padding: 4px 18px;
+}
+
+.homeNews .gallery-wrap .gallery .gallery-group .gallery-group-n .detail
+{
+    padding: 10px 18px;
+}
+
+
+.homeNews .gallery-wrap .gallery .gallery-group .gallery-group-n .detail .title p
+{
+    text-decoration: none;
+    color: #ffffff;
+    font-size: x-large;
+    word-wrap: break-word;
+
+}
+
+.homeNews .gallery-wrap .gallery .gallery-group .gallery-group-n .detail .content p
+{
+    text-decoration: none;
+    color: #c6c6c6;
+    font-size: large;
+    word-wrap: break-word;
+
+}
+
+
+.gallery::-webkit-scrollbar{
+    display: none;
+}
+
 
 #backBtn, #nextBtn{
     width: 30px;
@@ -202,11 +278,11 @@ blockquote p{
     color: rgb(60, 174, 113);
 }
 
-.gallery div img:hover{
+/* .gallery div img:hover{
     cursor: pointer;
     transform: scale(1.1);
     transition: 0.5s;
-}
+} */
 
 
 /* footer */
