@@ -1,9 +1,19 @@
 from flask import Flask, render_template
+from flask import redirect, url_for
 from docx import Document
+import docx
 import os
 from pdb import set_trace as st
 import re
 from datetime import datetime
+# from wordcloud import WordCloud
+import stylecloud
+import matplotlib.pyplot as plt
+
+######################################################################################################################################################
+'''
+functions for extracting content for publications
+'''
 
 def extract_year(s):
     # Extract all four-digit numbers from the string
@@ -39,15 +49,55 @@ def docx_to_html(filepath):
 
 
 
+######################################################################################################################################################
+'''
+Creating wordcloud using stylecloud
+'''
 
+# Function to extract italicized words from the DOCX file
+def extract_italic_words_from_docx(filepath):
+    document = Document(filepath)
+    italic_words = []
+
+    for para in document.paragraphs:
+        for run in para.runs:
+            if run.italic and run.text.strip():  # Checking if the run is in italic and not just whitespace
+                italic_words.append(run.text)
+
+    return ' '.join(italic_words)
+
+# Extract italic text from the .docx file
+docx_filename = 'staticFiles/files/Publications_website.docx'
+text = extract_italic_words_from_docx(docx_filename).replace('using', '')
+
+# Generate the word cloud using stylecloud
+stylecloud.gen_stylecloud(text=text,
+                          icon_name="fas fa-microscope",
+                          palette="colorbrewer.diverging.Spectral_11",
+                          background_color='black',
+                          gradient="horizontal",
+                          max_words=100,
+                          output_name="staticFiles/files/style_cloud.png")
+
+
+
+######################################################################################################################################################
+
+'''
+Flask server
+'''
 # WSGI Application
 # Provide template folder name
 # The default folder name should be "templates" else need to mention custom folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
 
 
-@app.route('/home')
+@app.route('/')
 def index():
+    return redirect(url_for('home'))
+
+@app.route('/home')
+def home():
     return render_template('index.html')
 
 @app.route('/publications')

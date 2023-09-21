@@ -437,7 +437,17 @@ footer .footerWraper3 .copyright p{
 
 /* ---------------------------------------------------PUBLICATIONS--------------------------------------------------- */
 
+.section-wordcloud{
+    width: 100%;
+}
 
+.section-wordcloud .wc-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 70px;
+
+}
 
 .section-pub{
     display: flex;
@@ -480,3 +490,107 @@ footer .footerWraper3 .copyright p{
     color: rgb(60, 174, 113);
     font-size: 1.5em;
 }
+
+
+/* ---------------------------------------------------Lab Members--------------------------------------------------- */
+
+.pi{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.pi .pi-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.pi .pi-wrapper .pi-bio{
+    margin-top: 50px;
+    width: 64vw;
+}
+
+.pi .pi-wrapper .pi-bio p{
+    color: white;
+    text-align: justify;
+    font-size: large;
+}
+
+.pi .pi-basic-wrapper{
+    margin-top: 80px;
+    width: 70vw;
+    display: flex;
+    flex-direction: row;    
+
+}
+
+.pi .pi-basic-wrapper .pi-img{
+    display: flex;
+    color: white;
+    width: 40%;
+    justify-content: center;
+    align-items: center;
+}
+
+.pi .pi-basic-wrapper .pi-info{
+    color: white;
+    width: 60%;
+    margin-left: 60px;
+}
+
+.pi .pi-basic-wrapper .pi-info .pi-info-name{
+    font-size: 28pt;
+}
+
+.pi .pi-basic-wrapper .pi-info .pi-info-title{
+    margin-top: 3px;
+    font-size: medium;
+}
+
+.pi .pi-basic-wrapper .pi-info .pi-info-tag{
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-size: x-large;
+}
+
+.pi .pi-basic-wrapper .pi-info .pi-info-content{
+    font-size: medium;
+}
+
+
+
+.students{
+    margin-top: 50px;
+}
+
+
+.dividing{
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    /* top: 100px; */
+    overflow: hidden;
+    font-size: 21px;
+    color: #ffffff;
+}
+.dividing::before,.dividing::after{
+    content: '';
+    display: inline-block;
+    width: 23%;
+    height: 1px;
+    position: absolute;
+    background: rgb(60, 174, 113);
+    top: 50%;
+}
+.dividing::before{
+    margin-left: -10px;
+    transform: translateX(-100%);
+}
+.dividing::after{
+    margin-left: 10px;
+}
+
+
