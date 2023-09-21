@@ -564,22 +564,48 @@ footer .footerWraper3 .copyright p{
 
 .students{
     margin-top: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+.students .students-wrapper{
+    width: 70vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+}
+
+.cur-members, .alumini{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+}
+
+.student-cat{
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+}
 
 .dividing{
     position: relative;
+    align-items: center;
     text-align: center;
     justify-content: center;
     /* top: 100px; */
     overflow: hidden;
     font-size: 21px;
     color: #ffffff;
+    width: 100%;
 }
 .dividing::before,.dividing::after{
     content: '';
     display: inline-block;
-    width: 23%;
+    width: 100%;
     height: 1px;
     position: absolute;
     background: rgb(60, 174, 113);
@@ -594,3 +620,69 @@ footer .footerWraper3 .copyright p{
 }
 
 
+.students .students-wrapper .cur-members .cur-members-wrapper{
+    height: auto;
+    width: 80%;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.students .students-wrapper .cur-members .cur-members-wrapper .cur-members-content{
+    height: auto;
+    width: 100%;
+    /* background-color: #3eea8b33;
+    border-radius: 70px; */
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom: 15px;
+
+}
+
+.cur-members-content-intro{
+    height: 140px;
+    width: 70%;
+    /* border: 1px rgb(60, 174, 113) solid; */
+    background-color: #88b59732;
+    border-radius: 70px;
+}
+
+.cur-members-content-intro p.name{
+    padding-left: 60px;
+    padding-top: 3px;
+    color: white;
+    font-size: x-large;
+}
+
+.cur-members-content-intro p.cat{
+    padding-left: 60px;
+    /* padding-top: 5px; */
+    color: rgb(133, 133, 133);
+    font-size: small;
+}
+
+.cur-members-content-intro p.intro{
+    padding-left: 60px;
+    padding-right: 60px;
+    /* padding-top: 5px; */
+    color: rgb(212, 209, 209);
+    font-size: medium;
+    text-align: justify;
+}
+
+.cur-members-content-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30%;
+
+}
+
+
+.cur-members-content img{
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+    border: 2px rgb(60, 174, 113) solid;
+}
