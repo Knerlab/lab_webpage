@@ -14,10 +14,10 @@
             <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
             <nav>
                 <ul>
-                    <li><a href="#">Research</a></li>
+                    <li><a href="{{ url_for('research') }}">Research</a></li>
                     <li><a href="{{ url_for('publications') }}">Publications</a></li>
-                    <li><a href="#">Lab Members</a></li>
-                    <li><a href="#">Teaching & Lectures</a></li>
+                    <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
+                    <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
                 </ul>
             </nav>
         </header>

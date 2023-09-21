@@ -57,6 +57,17 @@ def publications():
     # st()
     return render_template('publications.html', content=content) 
 
- 
+@app.route('/lab-members')
+def labMembers():
+    return render_template('labMembers.html') 
+
+@app.route('/research')
+def research():
+    return render_template('research.html') 
+
+@app.route('/teaching-lectures')
+def teaching_lectures():
+    return render_template('teaching_lectures.html') 
+
 if __name__=='__main__':
     app.run(debug = True, port=8001)
