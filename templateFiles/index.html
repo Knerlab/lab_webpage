@@ -11,11 +11,11 @@
     <body>
         <header>
             <h1>Peter Kner Lab</h1>
-            <img class="logo" src="/staticFiles/assets/AIL_logo.png">
+            <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
             <nav>
                 <ul>
                     <li><a href="#">Research</a></li>
-                    <li><a href="#">Publications</a></li>
+                    <li><a href="{{ url_for('publications') }}">Publications</a></li>
                     <li><a href="#">Lab Members</a></li>
                     <li><a href="#">Teaching & Lectures</a></li>
                 </ul>

@@ -16,6 +16,9 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 
+/* ---------------------------------------------------HOME PAGE--------------------------------------------------- */
+
+
 /*-----------------Header----------------*/
 
 header {
@@ -40,6 +43,10 @@ header img {
     position: absolute;
     left: 20vw;
     top: 22px;
+}
+
+header img:hover{
+    cursor: pointer;
 }
 
 header ul{
@@ -423,4 +430,53 @@ footer .footerWraper3 .copyright{
 footer .footerWraper3 .copyright p{
     color: #636363;
     text-align: right;
+}
+
+
+
+
+/* ---------------------------------------------------PUBLICATIONS--------------------------------------------------- */
+
+
+
+.section-pub{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000000;
+}
+
+.section-pub .pub-wrapper{
+    width: 60vw;
+    height: auto;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.section-pub .pub-wrapper p{
+    color: rgb(255, 255, 255);
+}
+
+.section-pub .pub-wrapper .years{
+    margin-bottom: 30px;
+    margin-top: 50px;
+    position: relative;
+    left: -10px;
+}
+
+.section-pub .pub-wrapper .years p{
+    color: rgb(255, 255, 255);
+    font-size: 28pt;
+}
+
+.section-pub .pub-wrapper .pubs{
+    display: list-item;
+    font-size: large;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.section-pub .pub-wrapper .pubs::marker{
+    color: rgb(60, 174, 113);
+    font-size: 1.5em;
 }

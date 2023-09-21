@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/staticFiles/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Caveat|Open+Sans:400,700" rel="stylesheet">
+        <title>Kner Lab.</title>
+    </head>
+
+    <body>
+        <header>
+            <h1>Peter Kner Lab</h1>
+            <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
+            <nav>
+                <ul>
+                    <li><a href="#">Research</a></li>
+                    <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                    <li><a href="#">Lab Members</a></li>
+                    <li><a href="#">Teaching & Lectures</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section class="section-pub">
+                <div class="pub-wrapper">
+                    {{ content|safe }}
+                </div>
+            </section>
+        </main>
+    </body>
+    <footer>
+        <div class="footerWraper1">
+            <div class="text1"><p>KnerLab</p></div>
+            <div class="contact-buttons">
+                <div>
+                <a href="https://github.com/Knerlab" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/github_icon_sqr.png"></a>
+                <p>Follow us <br>on Github</p>
+                </div>
+                <div>
+                <a href="https://www.instagram.com/knerlab/" target="_blank" rel="nooperner"><img class="ins-pic" src="/staticFiles/assets/instagram_icon_sqr.png"></a>
+                <p>Follow us <br>on Instagram</p>
+                </div>
+                <div>
+                <a href="mailto:kner@uga.edu" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/email_icon_sqr.png"></a>
+                <p>Contact <br>with us</p>
+                </div>
+            </div>
+        </div>
+        <div class="footerWraper2">
+            <div id="progress-bar-container">
+                <div class="progress-bar-child progress"></div>
+                <div class="progress-bar-child shrinker timelapse"></div>
+            </div>
+        </div>
+
+        <div class="footerWraper3">
+            <div class="uni-info">
+                <a href="https://www.engr.uga.edu/" target="_blank" rel="nooperner">
+                    <img src="/staticFiles/assets/uga-eng-logo.png">
+                </a>
+            </div>
+            <div class="copyright">
+                <p>Copyright @ 2023 KnerLab All Rights Reserved<br>By Ming Song</p>
+            </div>
+        </div>
+        
+    </footer>
+
+
+
+</html>
