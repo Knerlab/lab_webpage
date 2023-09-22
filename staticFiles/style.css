@@ -592,6 +592,7 @@ footer .footerWraper3 .copyright p{
 }
 
 .dividing{
+    margin-bottom: 20px;
     position: relative;
     align-items: center;
     text-align: center;
@@ -625,6 +626,7 @@ footer .footerWraper3 .copyright p{
     width: 80%;
     margin-top: 20px;
     align-items: center;
+    margin-bottom: 40px;
 }
 
 .students .students-wrapper .cur-members .cur-members-wrapper .cur-members-content{
@@ -636,21 +638,26 @@ footer .footerWraper3 .copyright p{
     display: flex;
     align-items: center;
     flex-direction: row;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
+
 
 }
 
-.cur-members-content-intro{
-    height: 140px;
+.intro-wrapper{
+    height: 180px;
     width: 70%;
     /* border: 1px rgb(60, 174, 113) solid; */
-    background-color: #88b59732;
-    border-radius: 70px;
+    background-color: #5e8f6e67;
+    border-radius: 90px;
+}
+
+.cur-members-content-intro{
+    height: 80%;
 }
 
 .cur-members-content-intro p.name{
     padding-left: 60px;
-    padding-top: 3px;
+    padding-top: 12px;
     color: white;
     font-size: x-large;
 }
@@ -671,6 +678,19 @@ footer .footerWraper3 .copyright p{
     text-align: justify;
 }
 
+.intro-wrapper .contacts img{
+    width: 20px;
+    /* padding-left: 60px; */
+    padding-right: 5px;
+}
+
+.intro-wrapper .contacts{
+    height:20%;
+    padding-left: 60px;
+}
+
+
+
 .cur-members-content-img{
     display: flex;
     align-items: center;
@@ -680,9 +700,16 @@ footer .footerWraper3 .copyright p{
 }
 
 
-.cur-members-content img{
+.cur-members-content .cur-members-content-img img{
     height: 150px;
     width: 150px;
     border-radius: 50%;
     border: 2px rgb(60, 174, 113) solid;
+}
+
+
+
+img.hp{
+    position: relative;
+    top: -2px;
 }
