@@ -510,7 +510,7 @@ footer .footerWraper3 .copyright p{
 
 .pi .pi-wrapper .pi-bio{
     margin-top: 50px;
-    width: 64vw;
+    width: 70vw;
 }
 
 .pi .pi-wrapper .pi-bio p{
@@ -527,6 +527,10 @@ footer .footerWraper3 .copyright p{
 
 }
 
+div.pi-img img{
+    width: 100%;
+}
+
 .pi .pi-basic-wrapper .pi-img{
     display: flex;
     color: white;
@@ -538,7 +542,7 @@ footer .footerWraper3 .copyright p{
 .pi .pi-basic-wrapper .pi-info{
     color: white;
     width: 60%;
-    margin-left: 60px;
+    margin-left: 30px;
 }
 
 .pi .pi-basic-wrapper .pi-info .pi-info-name{
@@ -704,7 +708,7 @@ footer .footerWraper3 .copyright p{
     height: 150px;
     width: 150px;
     border-radius: 50%;
-    border: 2px rgb(60, 174, 113) solid;
+    border: 1px rgb(60, 174, 113) solid;
 }
 
 
