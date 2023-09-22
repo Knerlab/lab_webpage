@@ -8,7 +8,7 @@ Webpage dev using HTML+CSS+JS
 ## Requirements:
 
 1. install flask:
-   python -m pip flask
+   python -m pip install flask
 2. install docx: 
    python -m pip install python-docx
 3. install stylecloud:
