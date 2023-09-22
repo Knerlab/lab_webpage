@@ -66,18 +66,20 @@ def extract_italic_words_from_docx(filepath):
 
     return ' '.join(italic_words)
 
-# Extract italic text from the .docx file
-docx_filename = 'staticFiles/files/Publications_website.docx'
-text = extract_italic_words_from_docx(docx_filename).replace('using', '')
 
-# Generate the word cloud using stylecloud
-stylecloud.gen_stylecloud(text=text,
-                          icon_name="fas fa-microscope",
-                          palette="colorbrewer.diverging.Spectral_11",
-                          background_color='black',
-                          gradient="horizontal",
-                          max_words=100,
-                          output_name="staticFiles/files/style_cloud.png")
+if not os.path.exists("staticFiles/files/style_cloud.png"):
+    # Extract italic text from the .docx file
+    docx_filename = 'staticFiles/files/Publications_website.docx'
+    text = extract_italic_words_from_docx(docx_filename).replace('using', '')
+
+    # Generate the word cloud using stylecloud
+    stylecloud.gen_stylecloud(text=text,
+                            icon_name="fas fa-microscope",
+                            palette="colorbrewer.diverging.Spectral_11",
+                            background_color='black',
+                            gradient="horizontal",
+                            max_words=100,
+                            output_name="staticFiles/files/style_cloud.png")
 
 
 
