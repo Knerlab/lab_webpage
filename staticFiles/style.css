@@ -711,9 +711,32 @@ div.pi-img img{
     border: 1px rgb(60, 174, 113) solid;
 }
 
-
-
 img.hp{
     position: relative;
     top: -2px;
+}
+
+.alumini .alumini-wrapper{
+    margin-top: 10px;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+}
+
+.alumini .alumini-wrapper div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* margin-bottom: 5px; */
+}
+
+.alumini .alumini-wrapper p{
+    color: white;
+    font-size: large;
+    display: list-item;
+}
+
+.alumini .alumini-wrapper p::marker{
+    color: rgb(60, 174, 113);
+    font-size: 1.5em;
 }
