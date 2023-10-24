@@ -116,12 +116,15 @@ blockquote p{
     font-family: 'helvetica';
     font-weight: 100;
     font-size: 20pt;
+    width: 60%;
 }
 
 .labIntro blockquote p{
     position: relative;
     top: 50px;
     left: 0px;
+    word-wrap: break-word;
+    text-align: justify;
 }
 /* ----------- section3 ----------- */
 
@@ -432,8 +435,150 @@ footer .footerWraper3 .copyright p{
     text-align: right;
 }
 
+/* ---------------------------------------------------RESEARCH--------------------------------------------------- */
+
+.bk{
+    /* padding: 40px 0; */
+    margin-top: 30px;
+    background: linear-gradient(rgba(141,153,174,0.1),rgba(141,153,174,0.2)),
+    url(../staticFiles/assets/laser_bg.png) no-repeat fixed;
+    /* background: url(../staticFiles/assets/laser_bg.png) no-repeat fixed; */
+    background-size: cover;
+    height: 450px;
+}
+
+.research_intro{
+    /* background-color: #c6c6c6; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
 
 
+.research_wrapper{
+    display: flex;
+    flex-direction: column;
+    /* background-color: #ffdb3a; */
+    width: 75%;
+    height: auto;
+}
+
+
+
+
+.research_item{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.research_wrapper .research_title{
+    display: list-item;
+    font-size: 25pt;
+    color: white;
+    /* margin-left: 55px; */
+    width: 85%;
+    margin-bottom: 50px;
+}
+
+.research_wrapper .research_title::marker{
+    color: rgb(60, 174, 113);
+    font-size: 1.2em;
+}
+
+.research_wrapper .research_img{
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+.research_wrapper .research_img img{
+    width: 80%;
+}
+
+.research_wrapper .research_img .lsm{
+    width: 120%;
+}
+
+
+.research_wrapper .research_text{
+    margin-top: 10px;
+    width: 85%;
+    height: auto;
+    margin-bottom: 30px;
+    /* background-color: #000000; */
+}
+
+.research_wrapper .research_text p{
+    font-size: 15pt;
+    color: white;
+    margin-left: 15px;
+    word-wrap: break-word;
+    text-align: justify;
+}
+
+
+
+/* ---------------------------------------------------TEACHING--------------------------------------------------- */
+.teaching_sec1{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    /* background-color: #636363; */
+}
+
+.teaching_wrapper{
+    display: flex;
+    flex-direction: column;
+    /* background-color: #ffdb3a; */
+    width: 75%;
+    height: auto;
+}
+
+.teaching_item{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.teaching_wrapper .teaching_title{
+    display: list-item;
+    font-size: 15pt;
+    color: white;
+    width: 85%;
+    margin-bottom: 20px;
+}
+
+.teaching_wrapper .teaching_text{
+    /* margin-top: 10px; */
+    width: 85%;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.teaching_wrapper .teaching_text p{
+    font-size: 12pt;
+    color: white;
+    margin-left: 15px;
+    word-wrap: break-word;
+    text-align: justify;
+}
+
+.teaching_wrapper .teaching_title::marker{
+    color: rgb(60, 174, 113);
+    font-size: 1.2em;
+}
 
 /* ---------------------------------------------------PUBLICATIONS--------------------------------------------------- */
 
