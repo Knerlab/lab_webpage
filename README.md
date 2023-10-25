@@ -1,34 +1,34 @@
 ![plot](staticFiles/assets/AIL_logo.png)
-# *lab_webpage
+# lab_webpage
 Homepage for KnerLab
 
 The plateform is using Flask in python3.
 Webpage dev using HTML+CSS+JS
 
-## *Requirements:
+## 1. Requirements:
 
-### *Python requirements:
+### (1) Python requirements:
 > python3 -m pip install -r requirements.txt
 
-### *Apache2 requirements:
+### (2) Apache2 requirements:
 > sudo apt install apache2
 
-### *Move the project folder into apache dev env
+### (3) Move the project folder into apache dev env
 > mv lab_webpage /var/www/
 
-### *Move configuration file into apache dev env
+### (4) Move configuration file into apache dev env
 > cp lab_webpage/lab_webpage.conf /etc/apache2/sites_available
 
-### *Installing WSGI module
+### (5) Installing WSGI module
 > sudo apt-get install libapache2-mod-wsgi-py3
 
-### *Enable WSGI module
+### (6) Enable WSGI module
 > sudo a2enmod wsgi
 
 
-## *USAGE
+## 2. USAGE
 
-### *LOCAL
+### (1) LOCAL
 > Launching Flask server by:
    
 > python main.py
@@ -36,14 +36,14 @@ Webpage dev using HTML+CSS+JS
 > The port is now using 8001. For using another port, change in main.py
 
 
-### *Using Apache
+### (2) Using Apache
 
-### *Testing first
+### [1] Testing first
 > sudo apachectl configtest  
 
 > Expect no error and end with "Syntax OK"
 
-### *Running
+### [2] Running
 > sudo a2ensite lab_webpage.conf
 
 > sudo service apache2 reload
