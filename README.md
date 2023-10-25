@@ -12,6 +12,7 @@ Webpage dev using HTML+CSS+JS
 
 ### (2) Apache2 requirements:
 > sudo apt install apache2
+> sudo apt-get install libapache2-mod-wsgi-py3
 
 ### (3) Move the project folder into apache dev env
 > mv lab_webpage /var/www/
@@ -19,10 +20,7 @@ Webpage dev using HTML+CSS+JS
 ### (4) Move configuration file into apache dev env
 > cp lab_webpage/lab_webpage.conf /etc/apache2/sites_available
 
-### (5) Installing WSGI module
-> sudo apt-get install libapache2-mod-wsgi-py3
-
-### (6) Enable WSGI module
+### (5) Enable WSGI module
 > sudo a2enmod wsgi
 
 
