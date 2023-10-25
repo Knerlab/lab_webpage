@@ -36,7 +36,7 @@ Webpage dev using HTML+CSS+JS
 > The port is now using 8001. For using another port, change in main.py
 
 
-### (2) Using Apache Global
+### (2) Using Apache for Global
 
 ### [1] Testing first
 > sudo apachectl configtest  
