@@ -264,6 +264,7 @@ blockquote p{
     font-size: small;
     word-wrap: break-word;
     padding: 10px 0px;
+    text-align: justify;
 
 }
 

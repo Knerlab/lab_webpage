@@ -12,6 +12,7 @@ Webpage dev using HTML+CSS+JS
 
 ### (2) Apache2 requirements:
 > sudo apt install apache2
+
 > sudo apt-get install libapache2-mod-wsgi-py3
 
 ### (3) Move the project folder into apache dev env
