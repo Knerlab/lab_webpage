@@ -1,7 +1,0 @@
-www.knerlab.engr.uga.edu{
-    redir https://knerlab.engr.uga.edu{uri}
-}
-
-knerlab.engr.uga.edu{
-    reverse_proxy localhost:8000
-}
