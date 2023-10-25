@@ -7,37 +7,45 @@ Webpage dev using HTML+CSS+JS
 
 ## Requirements:
 
+### Python requirements:
 python3 -m pip install -r requirements.txt
 
-install caddy:
+### Apache2 requirements:
+sudo apt install apache2
 
-sudo apt update 
+### Move the project folder into apache dev env
+mv lab_webpage /var/www/
 
-sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https 
+### Move configuration file into apache dev env
+cp lab_webpage/lab_webpage.conf /etc/apache2/sites_available
 
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg 
+### Installing WSGI module
+sudo apt-get install libapache2-mod-wsgi-py3
 
-curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list 
-
-sudo apt update 
-
-sudo apt install caddy 
-
-caddy start
-
-gunicorn main:app &
-
-<!-- 1. install flask:
-   python -m pip install flask
-2. install docx: 
-   python -m pip install python-docx
-3. install stylecloud:
-   python -m pip install stylecloud -->
+### Enable WSGI module
+sudo a2enmod wsgi
 
 
 ## USAGE
 
-1. Launching Flask server by:
-   python main.py
+### LOCAL
+Launching Flask server by:
+   
+python main.py
 
 The port is now using 8001. For using another port, change in main.py
+
+
+### Using Apache
+
+### Testing first
+sudo apachectl configtest  
+
+Expect no error and end with "Syntax OK"
+
+### Running
+sudo a2ensite lab_webpage.conf
+
+sudo service apache2 reload
+
+sudo apachectl restart
