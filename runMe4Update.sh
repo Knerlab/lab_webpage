@@ -1,4 +1,6 @@
 #!/bin/bash
+# Load venv environments
+source ../labwebpage/bin/activate
 # Kill any existing Gunicorn processes
 pkill gunicorn
 # Wait for a moment to ensure processes are killed
