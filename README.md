@@ -35,12 +35,15 @@ Webpage dev using HTML+CSS+JS
 ### [1] Git clone from repo to server: https://github.com/Knerlab/lab_webpage.git
 
 > git clone https://github.com/Knerlab/lab_webpage.git
+
 > cd lab_webpage
 
 ### [2] Update your code locally and commit [!!!NOT ON THE SERVER!!!]
 
 > git add .
+
 > git commit -m 'Update'
+
 > git push
 
 ### [3] Pull your changes to the server [In the lab_page folder]
@@ -48,4 +51,5 @@ Webpage dev using HTML+CSS+JS
 > git pull
 
 ### [4] Run script to update webpage [In the lab_page folder]
+
 > bash runMe4Update.sh
