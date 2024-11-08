@@ -268,6 +268,17 @@ blockquote p{
 
 }
 
+.homeNews .gallery-wrap .gallery .gallery-group .gallery-group-n .detail .content a
+{
+    /* text-decoration: none; */
+    color: #75f009;
+    font-size: small;
+    word-wrap: break-word;
+    padding: 10px 0px;
+    text-align: justify;
+
+}
+
 
 .gallery::-webkit-scrollbar{
     display: none;
