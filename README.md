@@ -2,7 +2,7 @@
 # lab_webpage
 Homepage for KnerLab
 
-The plateform is using Flask in python3.
+The platform is using Flask in python3.
 Webpage dev using HTML+CSS+JS
 
 ## 1. Create new instance of ubuntu
