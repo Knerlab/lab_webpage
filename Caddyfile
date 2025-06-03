@@ -7,6 +7,6 @@ www.knerlab.com {
     redir https://knerlab.com{uri}
 }
 
-knerlab.com {
+http://54.80.14.26 {
     reverse_proxy localhost:8000
 }
