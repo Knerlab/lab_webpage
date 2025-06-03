@@ -1,3 +1,8 @@
+{
+    http_port 80
+    https_port 443
+}
+
 www.knerlab.com {
     redir https://knerlab.com{uri}
 }
