@@ -12,6 +12,7 @@
         <header>
             <h1>Peter Kner Lab</h1>
             <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
             <nav>
                 <ul>
                     <li><a href="{{ url_for('research') }}">Research</a></li>
@@ -42,7 +43,7 @@
                 <!-- Next and previous buttons -->
                 <div class="text">News</div>
                 <div class="gallery-wrap">
-                    <a class="prev" onclick="plusSlides(-1)" id="backBtn">&#10094;</a>
+                    <a class="prev" id="backBtn">&#10094;</a>
                     <div class="gallery">
                         <div class="gallery-group">
 
@@ -132,7 +133,7 @@
 
                         </div>
                     </div>
-                    <a class="next" onclick="plusSlides(1)" id="nextBtn">&#10095;</a>
+                    <a class="next" id="nextBtn">&#10095;</a>
                 </div>
             </section>
         </main>
@@ -177,3 +178,4 @@
         
     </footer>
 </html>
+
