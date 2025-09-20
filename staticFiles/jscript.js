@@ -46,13 +46,23 @@
     const backBtn = document.getElementById('backBtn');
     const nextBtn = document.getElementById('nextBtn');
     if (scrollContainer && backBtn && nextBtn) {
+        const getStep = () => {
+            const card = scrollContainer.querySelector('.gallery-group-n');
+            if (card) {
+                const group = card.parentElement;
+                const style = group ? window.getComputedStyle(group) : null;
+                const gap = style ? parseFloat(style.columnGap || style.gap || '0') : 0;
+                return Math.ceil(card.getBoundingClientRect().width + (isNaN(gap) ? 0 : gap));
+            }
+            return Math.ceil(scrollContainer.clientWidth);
+        };
         backBtn.addEventListener('click', () => {
             scrollContainer.style.scrollBehavior = 'smooth';
-            scrollContainer.scrollLeft -= 980;
+            scrollContainer.scrollLeft -= getStep();
         });
         nextBtn.addEventListener('click', () => {
             scrollContainer.style.scrollBehavior = 'smooth';
-            scrollContainer.scrollLeft += 980;
+            scrollContainer.scrollLeft += getStep();
         });
     }
 })();
