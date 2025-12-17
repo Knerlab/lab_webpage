@@ -1,181 +1,775 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="/staticFiles/style.css">
-        <link href="https://fonts.googleapis.com/css?family=Caveat|Open+Sans:400,700" rel="stylesheet">
-        <title>Kner Lab.</title>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kner Lab.</title>
+    <link href="https://fonts.googleapis.com/css?family=Caveat|Open+Sans:400,700|Helvetica+Neue:400,700" rel="stylesheet">
+    
+    <style>
+        /* ------------------- CSS Variables & Reset ------------------- */
+        :root {
+            --primary-green: #3cae71;
+            --primary-green-hover: #2e8b57;
+            --bg-black: #050505;
+            --text-white: #ffffff;
+            --text-gray: #c6c6c6;
+            --card-border: #349b64;
+            --transition-speed: 0.4s;
+        }
 
-    <body>
-        <header>
-            <h1>Peter Kner Lab</h1>
-            <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
-            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('research') }}">Research</a></li>
-                    <li><a href="{{ url_for('publications') }}">Publications</a></li>
-                    <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
-                    <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
-                </ul>
-            </nav>
-        </header>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        <main>
-            <section class="homeBanner">
-               
-                <blockquote><p>"On these observations I have spent more time <br>than many will believe, but I have done them <br>with joy."</p></blockquote>
-                <!-- <blockquote>"People who look for the first time through a <br>microscope say now I see this and then I see <br>that and even a skilled observer can be fooled.<br> On these observations I have spent more time <br>than many will believe, but I have done them <br>with joy."</blockquote> -->
-                <blockquote><p>---- 1701, Anthonie van Leeuwenhoek</p></blockquote>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color var(--transition-speed);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* ------------------- Animations ------------------- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shine {
+            100% {
+                left: 125%;
+            }
+        }
+
+        /* Scroll Reveal Class */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ------------------- Header ------------------- */
+        header {
+            background-color: rgba(0, 0, 0, 0.9);
+            height: 80px;
+            width: 100%;
+            position: fixed; /* Sticky header */
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5vw;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(60, 174, 113, 0.2);
+        }
+
+        header h1 {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+        }
+
+        .logo-container {
+            position: relative;
+            overflow: hidden;
+            display: block;
+        }
+
+        header img.logo {
+            height: 50px;
+            width: auto;
+            display: block;
+        }
+        
+        /* Logo Shine Effect */
+        .logo-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 100%);
+            transform: skewX(-25deg);
+            transition: 0.5s; 
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .logo-container:hover::after {
+            animation: shine 0.75s;
+        }
+
+        header nav ul {
+            display: flex;
+            gap: 30px;
+        }
+
+        header nav a {
+            font-size: 16px;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            color: var(--text-white); /* Ensure visible color */
+        }
+
+        /* Nav underline animation */
+        header nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary-green);
+            transition: width 0.3s ease;
+        }
+
+        header nav a:hover {
+            color: var(--primary-green);
+        }
+
+        header nav a:hover::after {
+            width: 100%;
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* ------------------- Hero Section ------------------- */
+        .homeBanner {
+            position: relative;
+            height: 100vh; /* Full viewport height */
+            min-height: 600px;
+            background-image: url('/staticFiles/assets/Anthonie_van_Leeuwenhoek_profile.png');
+            background-repeat: no-repeat;
+            background-size: cover; 
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 0;
+        }
+
+        /* Dark overlay for better text readability */
+        .homeBanner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); 
+            z-index: 1;
+        }
+
+        .homeBanner blockquote {
+            z-index: 2;
+            color: white;
+            font-family: 'Caveat', cursive;
+            font-weight: 400;
+            font-size: 2.5rem;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+            text-align: center;
+            max-width: 800px;
+            padding: 20px;
+            /* Initial Animation */
+            animation: fadeInUp 1.2s ease-out forwards;
+        }
+
+        .homeBanner blockquote .author {
+            display: block;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: var(--primary-green);
+            font-family: 'Open Sans', sans-serif;
+            font-style: normal;
+        }
+
+        /* ------------------- Lab Intro ------------------- */
+        .labIntro {
+            padding: 100px 10vw;
+            display: flex;
+            justify-content: center;
+            background-color: #0a0a0a;
+        }
+
+        .labIntro blockquote {
+            color: white;
+            font-family: 'Helvetica', sans-serif;
+            font-weight: 300;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            text-align: center;
+            max-width: 900px;
+            border-left: 3px solid var(--primary-green);
+            padding-left: 20px;
+        }
+
+        /* ------------------- News Section ------------------- */
+        .homeNews {
+            padding: 50px 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            color: var(--text-white);
+            display: inline-block;
+            position: relative;
+            padding: 0 15px;
+            z-index: 1;
+            background-color: var(--bg-black); /* Masks the line */
+        }
+
+        .section-header::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: var(--primary-green);
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        .gallery-wrap {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 50px; /* Space for buttons */
+        }
+
+        .gallery {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            gap: 30px;
+            padding: 20px 5px; /* Padding for hover shadows */
+        }
+
+        /* Hide scrollbar */
+        .gallery::-webkit-scrollbar {
+            display: none;
+        }
+        .gallery {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .gallery-item {
+            flex: 0 0 320px; /* Fixed width cards */
+            background-color: #111;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Hover Effect for Cards */
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(60, 174, 113, 0.2);
+            border-color: var(--primary-green);
+        }
+
+        .gallery-item .img-container {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item .tag {
+            background-color: var(--primary-green);
+            color: white;
+            padding: 5px 15px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            width: fit-content;
+            margin-top: -15px;
+            margin-left: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gallery-item .detail {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gallery-item .title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--text-white);
+            font-weight: 700;
+        }
+
+        .gallery-item .content {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            margin-bottom: 15px;
+        }
+
+        .gallery-item a {
+            color: var(--primary-green);
+            text-decoration: underline;
+        }
+
+        /* Navigation Buttons for Gallery */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            border: 1px solid var(--primary-green);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-green);
+            color: black;
+        }
+
+        .prev-btn { left: 0; }
+        .next-btn { right: 0; }
+
+        /* ------------------- Footer ------------------- */
+        footer {
+            background-color: #000;
+            padding: 50px 0 20px;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* Changed to center to group items closer */
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            gap: 60px; /* Increased gap */
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 40px;
+        }
+
+        .social-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Fixed: Made icons round with border */
+        .social-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid white;
+            transition: transform 0.3s, border-color 0.3s;
+            background-color: black; /* Ensure transparent pngs look good */
+        }
+
+        .social-item:hover img {
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--primary-green);
+        }
+
+        .social-item p {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+        }
+
+        /* Fun Progress Bar */
+        .progress-bar-container {
+            width: 100%;
+            max-width: 750px;
+            height: 4px;
+            background: #222;
+            margin: 40px auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-green), #ffdb3a, var(--primary-green));
+            background-size: 200% 100%;
+            animation: gradientMove 3s linear infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 100% 0; }
+            100% { background-position: -100% 0; }
+        }
+
+        /* Fixed: Footer Bottom Layout with Logo */
+        .footer-bottom {
+            max-width: 750px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 0 20px;
+            gap: 20px;
+        }
+
+        .uni-info img {
+            width: 200px; /* Adjusted size */
+            height: auto;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .uni-info img:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            text-align: right;
+            color: #636363;
+            font-size: 0.9rem;
+        }
+
+        /* ------------------- Responsive ------------------- */
+        @media (max-width: 768px) {
+            header {
+                padding: 0 20px;
+            }
+
+            .nav-toggle {
+                display: block;
+                z-index: 1001;
+            }
+
+            header nav ul {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: 70%;
+                background-color: rgba(0,0,0,0.95);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            header nav ul.active {
+                transform: translateX(0);
+            }
+
+            .homeBanner blockquote {
+                font-size: 1.8rem;
+            }
+            
+            .gallery-wrap {
+                padding: 0 20px;
+            }
+            
+            .nav-btn {
+                display: none; /* Hide scroll buttons on mobile, rely on swipe */
+            }
+            
+            .social-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .copyright {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Peter Kner Lab</h1>
+        <!-- Fixed: Added Flask URL for index -->
+        <a href="{{ url_for('index') }}" class="logo-container">
+            <img class="logo" src="/staticFiles/assets/AIL_logo.png" alt="AIL Logo" onerror="this.src='https://via.placeholder.com/150x50?text=AIL+Logo'">
+        </a>
+        
+        <button class="nav-toggle" aria-label="Toggle navigation">&#9776;</button>
+        
+        <nav>
+            <!-- Fixed: Replaced # with Flask url_for -->
+            <ul>
+                <li><a href="{{ url_for('research') }}">Research</a></li>
+                <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
+                <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="homeBanner">
+            <blockquote>
+                <p>"On these observations I have spent more time than many will believe, but I have done them with joy."</p>
+                <span class="author">---- 1701, Anthonie van Leeuwenhoek</span>
+            </blockquote>
+        </section>
+
+        <section class="labIntro reveal">
+            <blockquote>
+                <p>
+                    The AIL, led by Dr. Peter Kner, specializes in developing cutting-edge techniques to enhance the resolution of three-dimensional fluorescence imaging. Our primary focus is on integrating various super-resolution methods, such as structured illumination and STORM, with adaptive optics. This synergy allows us to achieve sub-diffraction resolution in model organisms, notably C. elegans and zebrafish.
+                </p>
+            </blockquote>
+        </section>
+
+        <section class="homeNews reveal">
+            <div class="section-header">
+                <h2>Latest News</h2>
+            </div>
+            
+            <div class="gallery-wrap">
+                <button class="nav-btn prev-btn" id="backBtn">&#10094;</button>
                 
-                <!-- <div class="Leeuwenhoek">
-                    <img class="Leeuwenhoek-img" src="/staticFiles/assets/Anthonie_van_Leeuwenhoek_profile.png">
-                </div> -->
-            </section>
-            <section class="labIntro">
-               
-                <blockquote><p>
-                    The AIL, led by Dr. Peter Kner, specializes in developing cutting-edge techniques to enhance the resolution of three-dimensional fluorescence imaging. Our primary focus is on integrating various super-resolution methods, such as structured illumination and STORM, with adaptive optics. This synergy allows us to achieve sub-diffraction resolution in model organisms, notably C. elegans and zebrafish.</p></blockquote>
-            </section>
-            <section class="homeNews">
-                <!-- Next and previous buttons -->
-                <div class="text">News</div>
-                <div class="gallery-wrap">
-                    <a class="prev" id="backBtn">&#10094;</a>
-                    <div class="gallery">
-                        <div class="gallery-group">
-
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
-                                    <div class="tag"><p>Lab News</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>We Are Recruiting!</p></div>
-                                        <div class="content"><p>We are recruiting graduate students and postdocs! Email
-                                            <a href="mailto:kner@uga.edu">Peter Kner</a> if you are interested.</p></div>
-                                    </div>
-                                </div>
-
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/news/tianyipaper.jpg"></div>
-                                    <div class="tag"><p>November 2024</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>Tianyi's paper is out!!</p></div>
-                                        <div class="content"><p>Very excited that Tianyi's paper
-                                            <a href="https://doi.org/10.1364/BOE.529428">
-                                                Spatial polarimetric second harmonic generation evaluation of collagen
-                                                in a hypophosphatasia mouse model </a> is out in BOE. Congrats to the
-                                            Mortensent Lab!</p></div>
-                                    </div>
-                                </div>
-
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/news/Shao_defense_20241107-1.jpg"></div>
-                                    <div class="tag"><p>November 2024</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>Congratulations Dr. Li!!</p></div>
-                                        <div class="content"><p>Shao successfully defended her thesis!</p></div>
-                                    </div>
-                                </div>
-
-                        </div>
+                <div class="gallery" id="newsGallery">
                     
-
-                        
-                        <div class="gallery-group">
-
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/news/remarks_firstLady.jpg"></div>
-                                    <div class="tag"><p>August 2024</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>Cancer Moonshot</p></div>
-                                        <div class="content">
-                                            <p>We are excited to be part of the ARPA-H funded $23 million project.
-                                                <a href="https://magic-scan.org">MAGIC-SCAN</a>.
-                                                This project is part of the Biden White House Cancer Moonshot being introduced at
-                                                Tulane by President Joe Biden and First Lady Jill Biden. We are recruiting postdocs
-                                                to work on this project.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/new1_ashley.jpg"></div>
-                                    <div class="tag"><p>May 2024</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>REU Student Poster</p></div>
-                                        <div class="content"><p>Congratulations to Ashley for successfully presenting her poster at the REU Student Symposium!</p></div>
-                                    </div>
-                                </div>
-
-                           
-                                <!-- <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
-                                    <div class="tag"><p>Lab News</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>We Are Recruiting!</p></div>
-                                        <div class="content"><p>We are recruiting graduate students and postdocs!</p></div>
-                                    </div>
-                                </div>
-                           
-
-                            
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
-                                    <div class="tag"><p>Lab News</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>We Are Recruiting!</p></div>
-                                        <div class="content"><p>We are recruiting graduate students and postdocs!</p></div>
-                                    </div>
-                                </div> -->
-
+                    <!-- News Item 1 -->
+                    <div class="gallery-item">
+                        <div class="img-container">
+                            <img src="/staticFiles/assets/hiring.jpg" onerror="this.src='https://via.placeholder.com/300x169?text=Hiring'">
+                        </div>
+                        <div class="tag">Lab News</div>
+                        <div class="detail">
+                            <div class="title">We Are Recruiting!</div>
+                            <div class="content">
+                                We are recruiting graduate students and postdocs! Email <a href="mailto:kner@uga.edu">Peter Kner</a> if you are interested.
+                            </div>
                         </div>
                     </div>
-                    <a class="next" id="nextBtn">&#10095;</a>
+
+                    <!-- News Item 2 -->
+                    <div class="gallery-item">
+                        <div class="img-container">
+                            <img src="/staticFiles/news/tianyipaper.jpg" onerror="this.src='https://via.placeholder.com/300x169?text=Paper+Image'">
+                        </div>
+                        <div class="tag">November 2024</div>
+                        <div class="detail">
+                            <div class="title">Tianyi's paper is out!!</div>
+                            <div class="content">
+                                Very excited that Tianyi's paper on <a href="#">Spatial polarimetric second harmonic generation</a> is out in BOE.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- News Item 3 -->
+                    <div class="gallery-item">
+                        <div class="img-container">
+                            <img src="/staticFiles/news/Shao_defense_20241107-1.jpg" onerror="this.src='https://via.placeholder.com/300x169?text=Defense+Image'">
+                        </div>
+                        <div class="tag">November 2024</div>
+                        <div class="detail">
+                            <div class="title">Congratulations Dr. Li!!</div>
+                            <div class="content">
+                                Shao successfully defended her thesis!
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- News Item 4 -->
+                     <div class="gallery-item">
+                        <div class="img-container">
+                            <img src="/staticFiles/news/remarks_firstLady.jpg" onerror="this.src='https://via.placeholder.com/300x169?text=Cancer+Moonshot'">
+                        </div>
+                        <div class="tag">August 2024</div>
+                        <div class="detail">
+                            <div class="title">Cancer Moonshot</div>
+                            <div class="content">
+                                We are excited to be part of the ARPA-H funded $23 million project MAGIC-SCAN introduced by First Lady Jill Biden.
+                            </div>
+                        </div>
+                    </div>
+                     <!-- News Item 5 -->
+                     <div class="gallery-item">
+                        <div class="img-container">
+                            <img src="/staticFiles/assets/new1_ashley.jpg" onerror="this.src='https://via.placeholder.com/300x169?text=REU+Student'">
+                        </div>
+                        <div class="tag">May 2024</div>
+                        <div class="detail">
+                            <div class="title">REU Student Poster</div>
+                            <div class="content">
+                                Congratulations to Ashley for successfully presenting her poster at the REU Student Symposium!
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-            </section>
-        </main>
-    <script src="/staticFiles/jscript.js"></script>
-    </body>
+                
+                <button class="nav-btn next-btn" id="nextBtn">&#10095;</button>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <div class="footerWraper1">
-            <div class="text1"><p>KnerLab</p></div>
-            <div class="contact-buttons">
-                <div>
-                <a href="https://github.com/Knerlab" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/github_icon_sqr.png"></a>
-                <p>Follow us <br>on Github</p>
+        <div class="footer-content reveal">
+            <div class="footer-logo">KnerLab</div>
+            
+            <div class="social-links">
+                <div class="social-item">
+                    <a href="https://github.com/Knerlab" target="_blank"><img src="/staticFiles/assets/github_icon_sqr.png" alt="Github" onerror="this.src='https://via.placeholder.com/40x40?text=GH'"></a>
+                    <p>Github</p>
                 </div>
-                <div>
-                <a href="https://www.instagram.com/knerlab/" target="_blank" rel="nooperner"><img class="ins-pic" src="/staticFiles/assets/instagram_icon_sqr.png"></a>
-                <p>Follow us <br>on Instagram</p>
+                <div class="social-item">
+                    <a href="https://www.instagram.com/knerlab/" target="_blank"><img src="/staticFiles/assets/instagram_icon_sqr.png" alt="Instagram" onerror="this.src='https://via.placeholder.com/40x40?text=IG'"></a>
+                    <p>Instagram</p>
                 </div>
-                <div>
-                <a href="mailto:kner@uga.edu" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/email_icon_sqr.png"></a>
-                <p>Contact <br>us</p>
+                <div class="social-item">
+                    <a href="mailto:kner@uga.edu"><img src="/staticFiles/assets/email_icon_sqr.png" alt="Email" onerror="this.src='https://via.placeholder.com/40x40?text=Em'"></a>
+                    <p>Contact</p>
                 </div>
-            </div>
-        </div>
-        <div class="footerWraper2">
-            <div id="progress-bar-container">
-                <div class="progress-bar-child progress"></div>
-                <div class="progress-bar-child shrinker timelapse"></div>
             </div>
         </div>
 
-        <div class="footerWraper3">
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+        </div>
+
+        <!-- Fixed: Added UGA Logo and restored structure -->
+        <div class="footer-bottom">
             <div class="uni-info">
-                <a href="https://www.engr.uga.edu/" target="_blank" rel="nooperner">
-                    <img src="/staticFiles/assets/uga-eng-logo.png">
+                <a href="https://www.engr.uga.edu/" target="_blank">
+                    <img src="/staticFiles/assets/uga-eng-logo.png" alt="UGA Engineering Logo">
                 </a>
             </div>
             <div class="copyright">
-                <p>Copyright @ 2024 KnerLab All Rights Reserved<br>By Ming Song</p>
+                <p>Copyright @ 2025 KnerLab All Rights Reserved</p>
+                <p>By Ming Song</p>
             </div>
         </div>
-        
     </footer>
-</html>
 
+    <script>
+        // ------------------- Navigation Toggle -------------------
+        const navToggle = document.querySelector('.nav-toggle');
+        const navUl = document.querySelector('header nav ul');
+
+        navToggle.addEventListener('click', () => {
+            navUl.classList.toggle('active');
+            navToggle.innerHTML = navUl.classList.contains('active') ? '&#10005;' : '&#9776;';
+        });
+
+        // ------------------- Scroll Reveal Animation -------------------
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.15 // Trigger when 15% of the element is visible
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ------------------- News Carousel Logic -------------------
+        const gallery = document.getElementById('newsGallery');
+        const nextBtn = document.getElementById('nextBtn');
+        const backBtn = document.getElementById('backBtn');
+
+        if (gallery && nextBtn && backBtn) {
+            nextBtn.addEventListener('click', () => {
+                // Scroll by width of one card + gap
+                gallery.scrollBy({ left: 350, behavior: 'smooth' });
+            });
+
+            backBtn.addEventListener('click', () => {
+                gallery.scrollBy({ left: -350, behavior: 'smooth' });
+            });
+        }
+    </script>
+</body>
+</html>

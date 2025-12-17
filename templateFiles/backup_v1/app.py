@@ -9,20 +9,6 @@ from datetime import datetime
 # from wordcloud import WordCloud
 import stylecloud
 import matplotlib.pyplot as plt
-from PIL import ImageDraw, ImageFont, Image
-
-# ---------------------------------------------------------------------
-# Monkey patch for Pillow 10+ compatibility
-# 修复 'ImageDraw' object has no attribute 'textsize' 报错
-if not hasattr(ImageDraw.ImageDraw, 'textsize'):
-    def textsize(self, text, font=None, *args, **kwargs):
-        if font is None:
-            font = self.getfont()
-        # 使用 getmask 获取文本尺寸 (width, height)
-        return font.getmask(text).size
-    
-    ImageDraw.ImageDraw.textsize = textsize
-# ---------------------------------------------------------------------
 
 ######################################################################################################################################################
 '''
@@ -51,11 +37,9 @@ def docx_to_html(filepath):
 
         if cur_year not in years_list and cur_year != None:
             years_list.append(cur_year)
-            # Use a specific class 'years' so we can target it in CSS easily
-            content.append('<div class="years"><h2>'+f'{cur_year}'+'</h2></div>')
+            content.append('<div class="years"><p>'+f'{cur_year}'+'</p></div>')
 
         if para.text != '':
-            # The publication text
             content.append('<div class="pubs"><p>'+para.text.replace(f' ({cur_year})','').replace(f'[]','')+'</p></div>')
     # st()
         
@@ -86,36 +70,16 @@ def extract_italic_words_from_docx(filepath):
 if not os.path.exists("staticFiles/files/style_cloud.png"):
     # Extract italic text from the .docx file
     docx_filename = 'staticFiles/files/Publications_website.docx'
-    
-    # 
-    if os.path.exists(docx_filename):
-        text = extract_italic_words_from_docx(docx_filename).replace('using', '')
+    text = extract_italic_words_from_docx(docx_filename).replace('using', '')
 
-        # Generate the word cloud using stylecloud
-        # Changed background_color to None for transparent background
-        stylecloud.gen_stylecloud(text=text,
-                                icon_name="fas fa-microscope",
-                                palette="colorbrewer.diverging.Spectral_11",
-                                background_color="rgba(0,0,0,0)",
-                                gradient="horizontal",
-                                max_words=100,
-                                output_name="staticFiles/files/style_cloud.png")
-    else:
-        print(f"Warning: {docx_filename} not found. Skipping wordcloud generation.")
-        
-    # img = Image.open("staticFiles/files/style_cloud.png").convert("RGBA")
-
-    # datas = img.getdata()
-    # new_data = []
-    # for item in datas:
-
-    #     if item[0] > 250 and item[1] > 250 and item[2] > 250:
-    #         new_data.append((255, 255, 255, 0))
-    #     else:
-    #         new_data.append(item)
-
-    # img.putdata(new_data)
-    # img.save("staticFiles/files/style_cloud1.png", "PNG")
+    # Generate the word cloud using stylecloud
+    stylecloud.gen_stylecloud(text=text,
+                            icon_name="fas fa-microscope",
+                            palette="colorbrewer.diverging.Spectral_11",
+                            background_color='black',
+                            gradient="horizontal",
+                            max_words=100,
+                            output_name="staticFiles/files/style_cloud.png")
 
 
 
@@ -141,10 +105,7 @@ def home():
 @app.route('/publications')
 def publications():
     file_path = os.path.join(app.static_folder, 'files/Publications_website.docx')
-    if os.path.exists(file_path):
-        content = docx_to_html(file_path)
-    else:
-        content = "<p>Publications file not found.</p>"
+    content = docx_to_html(file_path)
     # st()
     return render_template('publications.html', content=content) 
 

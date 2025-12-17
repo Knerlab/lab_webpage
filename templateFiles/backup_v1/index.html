@@ -10,8 +10,9 @@
 
     <body>
         <header>
-            <h1>Kner Lab</h1>
+            <h1>Peter Kner Lab</h1>
             <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
             <nav>
                 <ul>
                     <li><a href="{{ url_for('research') }}">Research</a></li>
@@ -38,128 +39,101 @@
                 <blockquote><p>
                     The AIL, led by Dr. Peter Kner, specializes in developing cutting-edge techniques to enhance the resolution of three-dimensional fluorescence imaging. Our primary focus is on integrating various super-resolution methods, such as structured illumination and STORM, with adaptive optics. This synergy allows us to achieve sub-diffraction resolution in model organisms, notably C. elegans and zebrafish.</p></blockquote>
             </section>
-
             <section class="homeNews">
                 <!-- Next and previous buttons -->
                 <div class="text">News</div>
                 <div class="gallery-wrap">
-                    <a class="prev" onclick="plusSlides(-1)" id="backBtn">&#10094;</a>
+                    <a class="prev" id="backBtn">&#10094;</a>
                     <div class="gallery">
                         <div class="gallery-group">
 
-                            <a href="#" class="superlink">
                                 <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/new1_ashley.jpg"></div>
-                                    <div class="tag"><p>July 2024</p></div>
+                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
+                                    <div class="tag"><p>Lab News</p></div>
                                     <div class="detail">
-                                        <div class="title"><p>REU Student Poster</p></div>
-                                        <div class="content"><p>Congratulations to Ashley for successfully presenting her poster at the REU Student Symposium!</p></div>
+                                        <div class="title"><p>We Are Recruiting!</p></div>
+                                        <div class="content"><p>We are recruiting graduate students and postdocs! Email
+                                            <a href="mailto:kner@uga.edu">Peter Kner</a> if you are interested.</p></div>
                                     </div>
                                 </div>
-                            </a>
 
-                           <a href="#" class="superlink">
+                                <div class="gallery-group-n">
+                                    <div class="img"><img src="/staticFiles/news/tianyipaper.jpg"></div>
+                                    <div class="tag"><p>November 2024</p></div>
+                                    <div class="detail">
+                                        <div class="title"><p>Tianyi's paper is out!!</p></div>
+                                        <div class="content"><p>Very excited that Tianyi's paper
+                                            <a href="https://doi.org/10.1364/BOE.529428">
+                                                Spatial polarimetric second harmonic generation evaluation of collagen
+                                                in a hypophosphatasia mouse model </a> is out in BOE. Congrats to the
+                                            Mortensent Lab!</p></div>
+                                    </div>
+                                </div>
+
+                                <div class="gallery-group-n">
+                                    <div class="img"><img src="/staticFiles/news/Shao_defense_20241107-1.jpg"></div>
+                                    <div class="tag"><p>November 2024</p></div>
+                                    <div class="detail">
+                                        <div class="title"><p>Congratulations Dr. Li!!</p></div>
+                                        <div class="content"><p>Shao successfully defended her thesis!</p></div>
+                                    </div>
+                                </div>
+
+                        </div>
+                    
+
+                        
+                        <div class="gallery-group">
+
                                 <div class="gallery-group-n">
                                     <div class="img"><img src="/staticFiles/news/remarks_firstLady.jpg"></div>
                                     <div class="tag"><p>August 2024</p></div>
                                     <div class="detail">
                                         <div class="title"><p>Cancer Moonshot</p></div>
                                         <div class="content">
-                                            <p>We are excited to be part of the ARPA-H funded $23 million project 
-                                            <a class="magicscan" href="https://magic-scan.org">MAGIC-SCAN</a>. This project is part of the 
-                                            Biden White House Cancer Moonshot being introduced at Tulane by President Joe Biden 
-                                            and First Lady Jill Biden</p>
+                                            <p>We are excited to be part of the ARPA-H funded $23 million project.
+                                                <a href="https://magic-scan.org">MAGIC-SCAN</a>.
+                                                This project is part of the Biden White House Cancer Moonshot being introduced at
+                                                Tulane by President Joe Biden and First Lady Jill Biden. We are recruiting postdocs
+                                                to work on this project.</p>
                                         </div>
                                     </div>
                                 </div>
-                            </a>
-<!--                       </a>
 
-                            <a href="#" class="superlink">
+
+                                <div class="gallery-group-n">
+                                    <div class="img"><img src="/staticFiles/assets/new1_ashley.jpg"></div>
+                                    <div class="tag"><p>May 2024</p></div>
+                                    <div class="detail">
+                                        <div class="title"><p>REU Student Poster</p></div>
+                                        <div class="content"><p>Congratulations to Ashley for successfully presenting her poster at the REU Student Symposium!</p></div>
+                                    </div>
+                                </div>
+
+                           
+                                <!-- <div class="gallery-group-n">
+                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
+                                    <div class="tag"><p>Lab News</p></div>
+                                    <div class="detail">
+                                        <div class="title"><p>We Are Recruiting!</p></div>
+                                        <div class="content"><p>We are recruiting graduate students and postdocs!</p></div>
+                                    </div>
+                                </div>
+                           
+
+                            
                                 <div class="gallery-group-n">
                                     <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
                                     <div class="tag"><p>Lab News</p></div>
                                     <div class="detail">
                                         <div class="title"><p>We Are Recruiting!</p></div>
-                                        <div class="content"><p>We are recruiting graduate students and postdocs! If you are interested please email Dr. Kner (kner at uga dot edu).</p></div>
+                                        <div class="content"><p>We are recruiting graduate students and postdocs!</p></div>
                                     </div>
-                                </div>
-                            </a>
-
-                             <a href="#" class="superlink">
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
-                                    <div class="tag"><p>Lab News</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>We Are Recruiting!</p></div>
-                                        <div class="content"><p>We are recruiting graduate students and postdocs! If you are interested please email Dr. Kner (kner at uga dot edu).</p></div>
-                                    </div>
-                                </div>
-                            </a>
-
-
-                        <a href="#" class="superlink">-->
-<!--                                <div class="gallery-group-n">-->
-<!--                                    <div class="img"><img src="/staticFiles/news/Shao_defense_20241107-1.jpg"></div>-->
-<!--                                    <div class="tag"><p>November 2024</p></div>-->
-<!--                                    <div class="detail">-->
-<!--                                        <div class="title"><p>Congratulations Dr. Li!!</p></div>-->
-<!--                                        <div class="content"><p>Shao successfully defended her thesis!</p></div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </a>-->
-
-<!--                            <a href="#" class="superlink">-->
-<!--                                <div class="gallery-group-n">-->
-<!--                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>-->
-<!--                                    <div class="tag"><p>November 2024</p></div>-->
-<!--                                    <div class="detail">-->
-<!--                                        <div class="title"><p>We Are Recruiting!</p></div>-->
-<!--                                        <div class="content"><p>We are recruiting graduate students and postdocs!</p></div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </a>-->
+                                </div> -->
 
                         </div>
-<!--
-                        <div class="gallery-group">
-                            <a href="#" class="superlink">
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
-                                    <div class="tag"><p>Lab News</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>We Are Recruiting!</p></div>
-                                        <div class="content"><p>We are recruiting graduate students and postdocs!</p></div>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <a href="#" class="superlink">
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
-                                    <div class="tag"><p>Lab News</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>We Are Recruiting!</p></div>
-                                        <div class="content"><p>We are recruiting graduate students and postdocs!</p></div>
-                                    </div>
-                                </div>
-                            </a>
-
-                            <a href="#" class="superlink">
-                                <div class="gallery-group-n">
-                                    <div class="img"><img src="/staticFiles/assets/hiring.jpg"></div>
-                                    <div class="tag"><p>Lab News</p></div>
-                                    <div class="detail">
-                                        <div class="title"><p>We Are Recruiting!</p></div>
-                                        <div class="content"><p>We are recruiting graduate students and postdocs!</p></div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-
-                        
                     </div>
-                    <a class="next" onclick="plusSlides(1)" id="nextBtn">&#10095;</a>
+                    <a class="next" id="nextBtn">&#10095;</a>
                 </div>
             </section>
         </main>
@@ -180,7 +154,7 @@
                 </div>
                 <div>
                 <a href="mailto:kner@uga.edu" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/email_icon_sqr.png"></a>
-                <p>Contact <br>with us</p>
+                <p>Contact <br>us</p>
                 </div>
             </div>
         </div>
@@ -198,9 +172,10 @@
                 </a>
             </div>
             <div class="copyright">
-                <p>Copyright @ 2023 KnerLab All Rights Reserved<br>By Ming Song</p>
+                <p>Copyright @ 2024 KnerLab All Rights Reserved<br>By Ming Song</p>
             </div>
         </div>
         
     </footer>
 </html>
+

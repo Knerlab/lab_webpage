@@ -1,121 +1,299 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="/staticFiles/style.css">
-        <link href="https://fonts.googleapis.com/css?family=Caveat|Open+Sans:400,700" rel="stylesheet">
-        <title>Kner Lab.</title>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research - Peter Kner Lab</title>
+    <link href="https://fonts.googleapis.com/css?family=Caveat|Open+Sans:400,600,700" rel="stylesheet">
+    <style>
+        /* ------------------- CSS Variables & Reset ------------------- */
+        :root {
+            --primary-green: #3cae71;
+            --bg-black: #050505;
+            --text-white: #ffffff;
+            --text-gray: #c6c6c6;
+            --card-border: #349b64;
+        }
 
-    <body>
-        <header>
-            <h1>Peter Kner Lab</h1>
-            <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
-            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('research') }}">Research</a></li>
-                    <li><a href="{{ url_for('publications') }}">Publications</a></li>
-                    <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
-                    <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <!-- TODO -->
-            <section class="bk"></section>
-            <section class="research_intro">
-                <div class="research_wrapper">
-                    <div class="research_item">
-                        <div class="research_title">
-                            <p>Adaptive Optics in Microscopy</p>
-                        </div>
-                        <div class="research_img">
-                            <img src="/staticFiles/assets/ao.png">
-                        </div>
-                        <div class="research_text">
-                            <p>Adaptive Optics (AO) is a technology designed to correct for aberrations in optical waves resulting from light passing through media with varied refractive indices. In the field of astronomy, AO addresses the blurring effects caused by minute refractive index variations in the atmosphere, thereby enhancing the clarity of images from ground-based telescopes, such as those of stars and planets. We aim to explore the application of AO to enhance fluorescence microscopy by compensating for similar optical distortions.</p>
-                        </div>
-                    </div>
-                    <div class="research_item">
-                        <div class="research_title">
-                            <p>Superresolution Microscopy</p>
-                        </div>
-                        <div class="research_img">
-                            <img src="/staticFiles/assets/superres.png">
-                            <img src="/staticFiles/assets/superres2.png">
-                        </div>
-                        <div class="research_text">
-                            <p>Structured Illumination Microscopy (SIM) enhances the resolution of fluorescence microscopy by doubling it in each dimension. This enhancement is realized through the generation of Moiré fringes in the sample. These fringes shift the high-frequency sample information, which is otherwise unresolvable by the microscope, to lower frequencies that can be captured by the microscope.</p>
-                        </div>
-                    </div>
-                    <div class="research_item">
-                        <div class="research_title">
-                            <p>Light Sheet Microscopy</p>
-                        </div>
-                        <div class="research_img">
-                            <img class="lsm" src="/staticFiles/assets/lsm.png">
-                        </div>
-                        <div class="research_text">
-                            <p>Light Sheet Microscopy (LSM) is employed to visualize the central nervous system of zebrafish, with a focus on understanding the role of GABAergic signaling in neural development. Our studies have captured seizure-like events in zebrafish subjected to various mutations and seizure-inducing chemicals. Presently, we are integrating Adaptive Optics into LSM and advancing novel LSM methodologies.</p>
-                        </div>
-                    </div>
-                    <div class="research_item">
-                        <div class="research_title">
-                            <p>Incoherent Holography</p>
-                        </div>
-                        <div class="research_img">
-                            <img src="/staticFiles/assets/holo.png">
-                        </div>
-                        <div class="research_text">
-                            <p>We are advancing incoherent digital holography for single molecule imaging. This hologram technique encodes the molecule's axial position, enabling its three-dimensional localization over an extensive axial range.</p>
-                        </div>
-                    </div>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        a { text-decoration: none; color: inherit; transition: color 0.3s; }
 
+        /* ------------------- Header ------------------- */
+        header {
+            background-color: rgba(0, 0, 0, 0.9);
+            height: 80px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5vw;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(60, 174, 113, 0.2);
+        }
+        header .logo { height: 50px; width: auto; }
+        header nav ul { display: flex; gap: 30px; list-style: none; }
+        header nav a { font-weight: 600; font-size: 16px; position: relative; padding: 5px 0; }
+        header nav a:hover { color: var(--primary-green); }
+        header nav a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background-color: var(--primary-green); transition: width 0.3s; }
+        header nav a:hover::after { width: 100%; }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
+
+        /* ------------------- Main Content ------------------- */
+        main { padding-top: 120px; padding-bottom: 60px; }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 80px;
+            opacity: 0;
+            animation: fadeInDown 1s forwards;
+        }
+        .page-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            display: inline-block;
+            border-bottom: 2px solid var(--primary-green);
+            padding-bottom: 10px;
+        }
+
+        /* Research Items Layout */
+        .research-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        .research-item {
+            display: flex;
+            align-items: flex-start; /* Align top */
+            gap: 50px;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        
+        .research-item:last-child { border-bottom: none; }
+
+        .research-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Alternating Layout */
+        .research-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        /* FIXED: Image Box Logic */
+        .research-img-box {
+            flex: 1;
+            /* Removed fixed height/min-height constraints to allow natural aspect ratio */
+            width: 100%; 
+            border-radius: 8px;
+            overflow: hidden;
+            /* background: #fff; Optional: White bg if transparency looks bad on black */
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        .research-img-box img {
+            width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            display: block;
+            object-fit: contain; /* Ensure full image is seen */
+        }
+
+        .research-content {
+            flex: 1;
+            padding-top: 10px;
+        }
+
+        .research-content h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-white);
+            position: relative;
+        }
+        
+        .research-content h3::before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 70%;
+            background: var(--primary-green);
+        }
+
+        .research-content p {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        /* ------------------- Footer (Unified) ------------------- */
+        footer { background-color: #000; padding: 50px 0 20px; border-top: 1px solid #222; }
+        .footer-content { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; gap: 60px; }
+        .footer-logo { font-size: 2rem; font-weight: bold; color: white; }
+        .social-links { display: flex; gap: 40px; }
+        .social-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .social-item img { width: 50px; height: 50px; border-radius: 50%; border: 1px solid white; transition: 0.3s; background-color: black; }
+        .social-item:hover img { transform: scale(1.1) rotate(5deg); border-color: var(--primary-green); }
+        .social-item p { font-size: 0.8rem; color: var(--text-gray); }
+        
+        .progress-bar-container { width: 100%; max-width: 750px; height: 4px; background: #222; margin: 40px auto; position: relative; overflow: hidden; border-radius: 2px; }
+        .progress-bar { width: 100%; height: 100%; background: linear-gradient(90deg, var(--primary-green), #ffdb3a, var(--primary-green)); background-size: 200% 100%; animation: gradientMove 3s linear infinite; }
+        @keyframes gradientMove { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        
+        .footer-bottom { max-width: 750px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0 20px; gap: 20px; }
+        .uni-info img { width: 200px; height: auto; opacity: 0.8; transition: opacity 0.3s; }
+        .uni-info img:hover { opacity: 1; }
+        .copyright { text-align: right; color: #636363; font-size: 0.9rem; }
+
+        @media (max-width: 900px) {
+            .research-item, .research-item:nth-child(even) { flex-direction: column; gap: 20px; }
+        }
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .nav-toggle { display: block; z-index: 1001; }
+            header nav ul { position: fixed; top: 0; right: 0; height: 100vh; width: 70%; background: rgba(0,0,0,0.95); flex-direction: column; justify-content: center; align-items: center; transform: translateX(100%); transition: 0.3s; }
+            header nav ul.active { transform: translateX(0); }
+            .footer-bottom { flex-direction: column; text-align: center; }
+        }
+        
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png" alt="Lab Logo"></a>
+        <button class="nav-toggle">&#9776;</button>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('research') }}">Research</a></li>
+                <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
+                <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="page-title">
+            <h2>Research Areas</h2>
+        </div>
+
+        <div class="research-container">
+            <!-- Item 1 -->
+            <div class="research-item">
+                <div class="research-img-box">
+                    <!-- Adjusted for natural fit -->
+                    <img src="/staticFiles/assets/ao.png" alt="Adaptive Optics">
                 </div>
-            </section>
-        </main>
-    <script src="/staticFiles/jscript.js"></script>
-    </body>
+                <div class="research-content">
+                    <h3>Adaptive Optics in Microscopy</h3>
+                    <p>Adaptive Optics (AO) is a technology designed to correct for aberrations in optical waves resulting from light passing through media with varied refractive indices. In the field of astronomy, AO addresses the blurring effects caused by minute refractive index variations in the atmosphere, thereby enhancing the clarity of images from ground-based telescopes, such as those of stars and planets. We aim to explore the application of AO to enhance fluorescence microscopy by compensating for similar optical distortions.</p>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="research-item">
+                <div class="research-img-box">
+                    <img src="/staticFiles/assets/superres.png" alt="Superresolution">
+                </div>
+                <div class="research-content">
+                    <h3>Superresolution Microscopy</h3>
+                    <p>Structured Illumination Microscopy (SIM) enhances the resolution of fluorescence microscopy by doubling it in each dimension. This enhancement is realized through the generation of Moiré fringes in the sample. These fringes shift the high-frequency sample information, which is otherwise unresolvable by the microscope, to lower frequencies that can be captured by the microscope.</p>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="research-item">
+                <div class="research-img-box">
+                    <img src="/staticFiles/assets/lsm.png" alt="Light Sheet Microscopy">
+                </div>
+                <div class="research-content">
+                    <h3>Light Sheet Microscopy</h3>
+                    <p>Light Sheet Microscopy (LSM) is employed to visualize the central nervous system of zebrafish, with a focus on understanding the role of GABAergic signaling in neural development. Our studies have captured seizure-like events in zebrafish subjected to various mutations and seizure-inducing chemicals. Presently, we are integrating Adaptive Optics into LSM and advancing novel LSM methodologies.</p>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="research-item">
+                <div class="research-img-box">
+                    <img src="/staticFiles/assets/holo.png" alt="Incoherent Holography">
+                </div>
+                <div class="research-content">
+                    <h3>Incoherent Holography</h3>
+                    <p>We are advancing incoherent digital holography for single molecule imaging. This hologram technique encodes the molecule's axial position, enabling its three-dimensional localization over an extensive axial range.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <footer>
-        <div class="footerWraper1">
-            <div class="text1"><p>KnerLab</p></div>
-            <div class="contact-buttons">
-                <div>
-                <a href="https://github.com/Knerlab" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/github_icon_sqr.png"></a>
-                <p>Follow us <br>on Github</p>
+        <div class="footer-content">
+            <div class="footer-logo">KnerLab</div>
+            <div class="social-links">
+                <div class="social-item">
+                    <a href="https://github.com/Knerlab" target="_blank"><img src="/staticFiles/assets/github_icon_sqr.png" alt="Github" onerror="this.src='https://via.placeholder.com/40x40?text=GH'"></a>
+                    <p>Github</p>
                 </div>
-                <div>
-                <a href="https://www.instagram.com/knerlab/" target="_blank" rel="nooperner"><img class="ins-pic" src="/staticFiles/assets/instagram_icon_sqr.png"></a>
-                <p>Follow us <br>on Instagram</p>
+                <div class="social-item">
+                    <a href="https://www.instagram.com/knerlab/" target="_blank"><img src="/staticFiles/assets/instagram_icon_sqr.png" alt="Instagram" onerror="this.src='https://via.placeholder.com/40x40?text=IG'"></a>
+                    <p>Instagram</p>
                 </div>
-                <div>
-                <a href="mailto:kner@uga.edu" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/email_icon_sqr.png"></a>
-                <p>Contact <br>with us</p>
+                <div class="social-item">
+                    <a href="mailto:kner@uga.edu"><img src="/staticFiles/assets/email_icon_sqr.png" alt="Email" onerror="this.src='https://via.placeholder.com/40x40?text=Em'"></a>
+                    <p>Contact</p>
                 </div>
-            </div>
-        </div>
-        <div class="footerWraper2">
-            <div id="progress-bar-container">
-                <div class="progress-bar-child progress"></div>
-                <div class="progress-bar-child shrinker timelapse"></div>
             </div>
         </div>
 
-        <div class="footerWraper3">
+        <div class="progress-bar-container">
+            <div class="progress-bar"></div>
+        </div>
+
+        <div class="footer-bottom">
             <div class="uni-info">
-                <a href="https://www.engr.uga.edu/" target="_blank" rel="nooperner">
-                    <img src="/staticFiles/assets/uga-eng-logo.png">
+                <a href="https://www.engr.uga.edu/" target="_blank">
+                    <img src="/staticFiles/assets/uga-eng-logo.png" alt="UGA Engineering Logo">
                 </a>
             </div>
             <div class="copyright">
-                <p>Copyright @ 2023 KnerLab All Rights Reserved<br>By Ming Song</p>
+                <p>Copyright @ 2025 KnerLab All Rights Reserved</p>
+                <p>By Ming Song</p>
             </div>
         </div>
-        
     </footer>
 
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const navUl = document.querySelector('header nav ul');
+        navToggle.addEventListener('click', () => { navUl.classList.toggle('active'); });
 
-
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('.research-item').forEach(item => observer.observe(item));
+    </script>
+</body>
 </html>

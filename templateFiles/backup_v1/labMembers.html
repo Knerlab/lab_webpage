@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/staticFiles/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Caveat|Open+Sans:400,700" rel="stylesheet">
+        <title>Kner Lab.</title>
+    </head>
+
+    <body>
+        <header>
+            <h1>Peter Kner Lab</h1>
+            <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('research') }}">Research</a></li>
+                    <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                    <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
+                    <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <section class="pi">
+                <div class="pi-wrapper">
+                    <div class="pi-basic-wrapper">
+                        <div class="pi-img"><img src="staticFiles/member_files/peter.JPG"></div>
+                        <div class="pi-info">
+                            <div class="pi-info-name">
+                            <p>Dr. Peter Kner</p>
+                            </div>
+                            <div class="pi-info-title">
+                                <p>Professor at University of Georgia</p>
+                            </div>
+                            <div class="pi-info-tag">
+                                <p>Research Interests</p>
+                            </div>
+                            <div class="pi-info-content">
+                                <p>Optics, Biophotonics, Microscopy, Adaptive Optics, Super-Resolution, SIM, Non-Linear SIM, STORM, Holography</p>
+                            </div>
+                            <div class="pi-info-tag">
+                                <p>Education</p>
+                            </div>
+                            <div class="pi-info-content">
+                                <p>
+                                    Ph.D., Physics, University of California, Berkeley, 1998 <br>
+                                    M.S. in Physics, University of California, Berkeley, 1995 <br>
+                                    B.S. in Physics, Massachusetts Institute of Technology, 1991 <br>
+                                    B.S. in Electrical Engineering, Massachusetts Institute of Technology, 1991 <br>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pi-bio">
+                        <p>Dr. Kner joined the University of Georgia (UGA) in January 2009, coming from the Department of Biochemistry and Biophysics at the University of California, San Francisco (UCSF). At UCSF, Dr. Kner pioneered the development of advanced microscopy systems, harnessing cutting-edge technologies to enhance nanoscale imaging in both biomedicine and engineering. Notably, he collaborated with Mats Gustafsson, a luminary in high-resolution microscopy, to construct the first structured illumination microscope (SIM) capable of imaging live cells. Now at UGA, while imparting knowledge and guiding students, Dr. Kner is at the forefront of innovating a novel microscope. This device aims to integrate multiple techniques to detect and rectify optical aberrations, optimizing in vivo fluorescence imaging.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="students">
+                <div class="students-wrapper">
+                    <div class="cur-members">
+                        <div class="student-cat">
+                            <div class="dividing">Current Members</div>
+                        </div>
+                        <div class="cur-members-wrapper">
+                            <!-- member 1 -->
+                            <div class="cur-members-content">
+                                <div class="cur-members-content-img">
+                                    <img src="staticFiles/member_files/Hassan.png">
+                                </div>
+                                <div class="intro-wrapper">
+                                    <div class="cur-members-content-intro">
+                                        <p class="name">Dr. Hassan Dibaji</p>
+                                        <p class="cat">Postdoctoral Researcher (2025-)</p>
+                                        <p class="intro">His work centers on advanced optical imaging, light-sheet, and super-resolution microscopy for large-scale biological imaging, with expertise in optical system design, laser optics, and photonics.</p>
+                                    </div>
+                                    <div class="contacts">
+                                        <a href="#" target="_blank" rel="nooperner"><img class="hp" src="staticFiles/assets/house-user-solid.png"></a>
+                                        <a href="#" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-github.png"></a>
+                                        <a href="https://www.linkedin.com/in/hassan-dibaji-8996945b/" target="_blank" rel="nooperner"><img src="staticFiles/assets/linkedin.png"></a>
+                                        <a href="mailto:sayedhassan.dibajiforoushani@uga.edu" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-envelope-solid.png"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- member 2 -->
+                            <div class="cur-members-content">
+
+                                <div class="intro-wrapper">
+                                    <div class="cur-members-content-intro">
+                                        <p class="name">Dr. Sajjad Khan</p>
+                                        <p class="cat">Postdoctoral Researcher (2025-)</p>
+                                        <p class="intro">Sajjad Khan earned his Ph.D. in Nanoscience and Microsystems Engineering from the University of New Mexico in 2025, focusing on advanced super-resolution microscopy. His work combines fluorescence imaging and computation, and he is developing SIM reconstruction algorithms for the ARPA-H MAGIC-SCAN project on precision surgical imaging.</p>
+                                    </div>
+                                    <div class="contacts">
+                                        <a href="#" target="_blank" rel="nooperner"><img class="hp" src="staticFiles/assets/house-user-solid.png"></a>
+                                        <a href="#" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-github.png"></a>
+                                        <a href="https://www.linkedin.com/in/sajjad-khan-ph-d-0b5862191/" target="_blank" rel="nooperner"><img src="staticFiles/assets/linkedin.png"></a>
+                                        <a href="mailto:sajjad.khan88@uga.edu" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-envelope-solid.png"></a>
+                                    </div>
+                                </div>
+                                <div class="cur-members-content-img">
+                                    <img src="staticFiles/member_files/Sajjad.png">
+                                </div>
+                            </div>
+                            <!-- member 3 -->
+                            <div class="cur-members-content">
+                                <div class="cur-members-content-img">
+                                    <img src="staticFiles/member_files/ming.png">
+                                </div>
+                                <div class="intro-wrapper">
+                                    <div class="cur-members-content-intro">
+                                        <p class="name">Ming Song</p>
+                                        <p class="cat">PhD Student (2022-)</p>
+                                        <p class="intro">Focusing on advancing Super-Resolution 3D volumetric lightsheet microscopy. Aiming to achieve isotropic super-resolution in large, live biological samples.</p>
+                                    </div>
+                                    <div class="contacts">
+                                        <a href="#" target="_blank" rel="nooperner"><img class="hp" src="staticFiles/assets/house-user-solid.png"></a>
+                                        <a href="https://github.com/Paratra" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-github.png"></a>
+                                        <a href="https://www.linkedin.com/in/ming-song-434800162/" target="_blank" rel="nooperner"><img src="staticFiles/assets/linkedin.png"></a>
+                                        <a href="mailto:ms97482@uga.edu" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-envelope-solid.png"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- member 4 -->
+                            <div class="cur-members-content">
+
+                                <div class="intro-wrapper">
+                                    <div class="cur-members-content-intro">
+                                        <p class="name">Rachel Carlyle</p>
+                                        <p class="cat">PhD Student (2023-)</p>
+                                        <p class="intro">Focusing on Instant evaluation of live MSC and CAR-T potency using deep learning and rapid quantitative phase imaging.</p>
+                                    </div>
+                                    <div class="contacts">
+                                        <a href="#" target="_blank" rel="nooperner"><img class="hp" src="staticFiles/assets/house-user-solid.png"></a>
+                                        <a href="#" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-github.png"></a>
+                                        <a href="https://www.linkedin.com/in/rachel-n-carlyle/" target="_blank" rel="nooperner"><img src="staticFiles/assets/linkedin.png"></a>
+                                        <a href="mailto:rachel.carlyle@uga.edu" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-envelope-solid.png"></a>
+                                    </div>
+                                </div>
+                                <div class="cur-members-content-img">
+                                    <img src="staticFiles/member_files/rachel.png">
+                                </div>
+                            </div>
+                            
+                            <!-- member 6 -->
+                            <div class="cur-members-content">
+                                <div class="cur-members-content-img">
+                                    <img src="staticFiles/member_files/melika.png">
+                                </div>
+                                <div class="intro-wrapper">
+                                    <div class="cur-members-content-intro">
+                                        <p class="name">Melika Pooyan</p>
+                                        <p class="cat">PhD Student (2024-)</p>
+                                        <p class="intro">Focusing on advancing SIM techniques within the MAGIC-SCAN project to enhance resolution over a large field of view through innovative optical and interferometric design.</p>
+                                    </div>
+                                    <div class="contacts">
+                                        <a href="#" target="_blank" rel="nooperner"><img class="hp" src="staticFiles/assets/house-user-solid.png"></a>
+                                        <a href="#" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-github.png"></a>
+                                        <a href="https://www.linkedin.com/in/melika-pooyan" target="_blank" rel="nooperner"><img src="staticFiles/assets/linkedin.png"></a>
+                                        <a href="mailto:melika.pooyan@uga.edu" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-envelope-solid.png"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- member 7 -->
+                            <div class="cur-members-content">
+
+                                <div class="intro-wrapper">
+                                    <div class="cur-members-content-intro">
+                                        <p class="name">Nastaran Dakhem</p>
+                                        <p class="cat">PhD Student (2024-)</p>
+                                        <p class="intro">"Focusing on nonlinear structured illumination microscopy (SIM) for enhanced-resolution imaging of live biological samples。</p>
+                                    </div>
+                                    <div class="contacts">
+                                        <a href="#" target="_blank" rel="nooperner"><img class="hp" src="staticFiles/assets/house-user-solid.png"></a>
+                                        <a href="#" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-github.png"></a>
+                                        <a href="https://www.linkedin.com/in/nastaran-dakhem-0196781ba" target="_blank" rel="nooperner"><img src="staticFiles/assets/linkedin.png"></a>
+                                        <a href="mailto:Nastaran.Dakhem@uga.edu" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-envelope-solid.png"></a>
+                                    </div>
+                                </div>
+                                <div class="cur-members-content-img">
+                                    <img src="staticFiles/member_files/nastaran.png">
+                                </div>
+                            </div>
+                            <!-- member 5 -->
+                            <div class="cur-members-content">
+                                <div class="cur-members-content-img">
+                                    <img src="staticFiles/member_files/mohi.jpg">
+                                </div>
+                                <div class="intro-wrapper">
+                                    <div class="cur-members-content-intro">
+                                        <p class="name">Mohammed Mohi Uddin</p>
+                                        <p class="cat">PhD Student (2024-)</p>
+                                        <p class="intro">Focusing on polarization control for high-NA microscopy, including nonlinear SIM and SHG, using Zemax OpticStudio and custom simulations to model and optimize polarization rectifiers.</p>
+                                    </div>
+                                    <div class="contacts">
+                                        <a href="#" target="_blank" rel="nooperner"><img class="hp" src="staticFiles/assets/house-user-solid.png"></a>
+                                        <a href="#" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-github.png"></a>
+                                        <a href="https://www.linkedin.com/in/mohammed-mohi-uddin-887422326?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="nooperner"><img src="staticFiles/assets/linkedin.png"></a>
+                                        <a href="mailto:mohi.uddin@uga.edu" target="_blank" rel="nooperner"><img src="staticFiles/assets/square-envelope-solid.png"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="alumini">
+                        <div class="student-cat">
+                            <div class="dividing">Alumini</div>
+                        </div>
+                        <div class="alumini-wrapper">
+                            <div><p>Bingxi Liu, 2021-2025, PHD, Coherent Corp.</p></div>
+                            <div><p>Shaoheng Li, 2020-2024, PHD, Atom Computing</p></div>
+                            <div><p>Ashley Saju,2024, REU Summer Student, UIUC</p></div>
+                            <div><p>Bayonle Adesola,2021-2023, MS, Texas Instruments</p></div>
+                            <div><p>Dr. Yang Liu, 2016-2022, PHD, KLA</p></div>
+                            <div><p>Dr. Ruizhe Lin, 2017-2021, PHD, SciLife Lab, Stockholm, Sweden</p></div>
+                            <div><p>John Green, 2018-2021, MS, Accenture</p></div>
+                            <div><p>Dr. Abhijit Marar, 2015-2020, PHD, AVR Optics</p></div>
+                            <div><p>Keelan Lawrence, 2014-2018,	MS, Boeing</p></div>
+                            <div><p>Thomas Huelsnitz, 2013-2015,MS</p></div>
+                            <div><p>Dr. Kayvan Tehrani, 2012-2015, PHD, UIUC</p></div>
+                            <div><p>Xiaolong Zhang, 2012-2014, MS, Google</p></div>
+                            <div><p>Dr. Ben Thomas, 2009-2014, MS&PHD, UGA</p></div>
+                            <div><p>Andrew Herrington, 2010-2012, MS, Apple</p></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    <script src="/staticFiles/jscript.js"></script>
+    </body>
+    <footer>
+        <div class="footerWraper1">
+            <div class="text1"><p>KnerLab</p></div>
+            <div class="contact-buttons">
+                <div>
+                <a href="https://github.com/Knerlab" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/github_icon_sqr.png"></a>
+                <p>Follow us <br>on Github</p>
+                </div>
+                <div>
+                <a href="https://www.instagram.com/knerlab/" target="_blank" rel="nooperner"><img class="ins-pic" src="/staticFiles/assets/instagram_icon_sqr.png"></a>
+                <p>Follow us <br>on Instagram</p>
+                </div>
+                <div>
+                <a href="mailto:kner@uga.edu" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/email_icon_sqr.png"></a>
+                <p>Contact <br>with us</p>
+                </div>
+            </div>
+        </div>
+        <div class="footerWraper2">
+            <div id="progress-bar-container">
+                <div class="progress-bar-child progress"></div>
+                <div class="progress-bar-child shrinker timelapse"></div>
+            </div>
+        </div>
+
+        <div class="footerWraper3">
+            <div class="uni-info">
+                <a href="https://www.engr.uga.edu/" target="_blank" rel="nooperner">
+                    <img src="/staticFiles/assets/uga-eng-logo.png">
+                </a>
+            </div>
+            <div class="copyright">
+                <p>Copyright @ 2023 KnerLab All Rights Reserved<br>By Ming Song</p>
+            </div>
+        </div>
+        
+    </footer>
+
+
+
+</html>

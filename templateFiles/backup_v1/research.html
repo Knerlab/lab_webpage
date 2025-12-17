@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/staticFiles/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Caveat|Open+Sans:400,700" rel="stylesheet">
+        <title>Kner Lab.</title>
+    </head>
+
+    <body>
+        <header>
+            <h1>Peter Kner Lab</h1>
+            <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
+            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('research') }}">Research</a></li>
+                    <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                    <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
+                    <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <!-- TODO -->
+            <section class="bk"></section>
+            <section class="research_intro">
+                <div class="research_wrapper">
+                    <div class="research_item">
+                        <div class="research_title">
+                            <p>Adaptive Optics in Microscopy</p>
+                        </div>
+                        <div class="research_img">
+                            <img src="/staticFiles/assets/ao.png">
+                        </div>
+                        <div class="research_text">
+                            <p>Adaptive Optics (AO) is a technology designed to correct for aberrations in optical waves resulting from light passing through media with varied refractive indices. In the field of astronomy, AO addresses the blurring effects caused by minute refractive index variations in the atmosphere, thereby enhancing the clarity of images from ground-based telescopes, such as those of stars and planets. We aim to explore the application of AO to enhance fluorescence microscopy by compensating for similar optical distortions.</p>
+                        </div>
+                    </div>
+                    <div class="research_item">
+                        <div class="research_title">
+                            <p>Superresolution Microscopy</p>
+                        </div>
+                        <div class="research_img">
+                            <img src="/staticFiles/assets/superres.png">
+                            <img src="/staticFiles/assets/superres2.png">
+                        </div>
+                        <div class="research_text">
+                            <p>Structured Illumination Microscopy (SIM) enhances the resolution of fluorescence microscopy by doubling it in each dimension. This enhancement is realized through the generation of Moiré fringes in the sample. These fringes shift the high-frequency sample information, which is otherwise unresolvable by the microscope, to lower frequencies that can be captured by the microscope.</p>
+                        </div>
+                    </div>
+                    <div class="research_item">
+                        <div class="research_title">
+                            <p>Light Sheet Microscopy</p>
+                        </div>
+                        <div class="research_img">
+                            <img class="lsm" src="/staticFiles/assets/lsm.png">
+                        </div>
+                        <div class="research_text">
+                            <p>Light Sheet Microscopy (LSM) is employed to visualize the central nervous system of zebrafish, with a focus on understanding the role of GABAergic signaling in neural development. Our studies have captured seizure-like events in zebrafish subjected to various mutations and seizure-inducing chemicals. Presently, we are integrating Adaptive Optics into LSM and advancing novel LSM methodologies.</p>
+                        </div>
+                    </div>
+                    <div class="research_item">
+                        <div class="research_title">
+                            <p>Incoherent Holography</p>
+                        </div>
+                        <div class="research_img">
+                            <img src="/staticFiles/assets/holo.png">
+                        </div>
+                        <div class="research_text">
+                            <p>We are advancing incoherent digital holography for single molecule imaging. This hologram technique encodes the molecule's axial position, enabling its three-dimensional localization over an extensive axial range.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </main>
+    <script src="/staticFiles/jscript.js"></script>
+    </body>
+    <footer>
+        <div class="footerWraper1">
+            <div class="text1"><p>KnerLab</p></div>
+            <div class="contact-buttons">
+                <div>
+                <a href="https://github.com/Knerlab" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/github_icon_sqr.png"></a>
+                <p>Follow us <br>on Github</p>
+                </div>
+                <div>
+                <a href="https://www.instagram.com/knerlab/" target="_blank" rel="nooperner"><img class="ins-pic" src="/staticFiles/assets/instagram_icon_sqr.png"></a>
+                <p>Follow us <br>on Instagram</p>
+                </div>
+                <div>
+                <a href="mailto:kner@uga.edu" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/email_icon_sqr.png"></a>
+                <p>Contact <br>with us</p>
+                </div>
+            </div>
+        </div>
+        <div class="footerWraper2">
+            <div id="progress-bar-container">
+                <div class="progress-bar-child progress"></div>
+                <div class="progress-bar-child shrinker timelapse"></div>
+            </div>
+        </div>
+
+        <div class="footerWraper3">
+            <div class="uni-info">
+                <a href="https://www.engr.uga.edu/" target="_blank" rel="nooperner">
+                    <img src="/staticFiles/assets/uga-eng-logo.png">
+                </a>
+            </div>
+            <div class="copyright">
+                <p>Copyright @ 2023 KnerLab All Rights Reserved<br>By Ming Song</p>
+            </div>
+        </div>
+        
+    </footer>
+
+
+
+</html>

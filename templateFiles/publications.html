@@ -1,80 +1,296 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" type="text/css" href="/staticFiles/style.css">
-        <link href="https://fonts.googleapis.com/css?family=Caveat|Open+Sans:400,700" rel="stylesheet">
-        <title>Kner Lab.</title>
-    </head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications - Peter Kner Lab</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #3cae71;
+            --bg-black: #050505;
+            --text-white: #ffffff;
+            --text-gray: #dddddd;
+        }
 
-    <body>
-        <header>
-            <h1>Peter Kner Lab</h1>
-            <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png"></a>
-            <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
-            <nav>
-                <ul>
-                    <li><a href="{{ url_for('research') }}">Research</a></li>
-                    <li><a href="{{ url_for('publications') }}">Publications</a></li>
-                    <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
-                    <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
-                </ul>
-            </nav>
-        </header>
-        <main>
-            <section class="section-wordcloud">
-                <div class="wc-icon">
-                    <img src="staticFiles/files/style_cloud.png">
-                </div>
-            </section>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--bg-black); color: var(--text-white); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-            <section class="section-pub">
-                <div class="pub-wrapper">
-                    {{ content|safe }}
-                </div>
-            </section>
-        </main>
-    <script src="/staticFiles/jscript.js"></script>
-    </body>
-    <footer>
-        <div class="footerWraper1">
-            <div class="text1"><p>KnerLab</p></div>
-            <div class="contact-buttons">
-                <div>
-                <a href="https://github.com/Knerlab" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/github_icon_sqr.png"></a>
-                <p>Follow us <br>on Github</p>
-                </div>
-                <div>
-                <a href="https://www.instagram.com/knerlab/" target="_blank" rel="nooperner"><img class="ins-pic" src="/staticFiles/assets/instagram_icon_sqr.png"></a>
-                <p>Follow us <br>on Instagram</p>
-                </div>
-                <div>
-                <a href="mailto:kner@uga.edu" target="_blank" rel="nooperner"><img class="media-pic" src="/staticFiles/assets/email_icon_sqr.png"></a>
-                <p>Contact <br>with us</p>
-                </div>
-            </div>
-        </div>
-        <div class="footerWraper2">
-            <div id="progress-bar-container">
-                <div class="progress-bar-child progress"></div>
-                <div class="progress-bar-child shrinker timelapse"></div>
-            </div>
-        </div>
+        /* Header */
+        header {
+            background-color: rgba(0, 0, 0, 0.9); height: 80px; width: 100%;
+            position: fixed; top: 0; z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5vw; border-bottom: 1px solid rgba(60, 174, 113, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        header .logo { height: 50px; width: auto; }
+        header nav ul { display: flex; gap: 30px; list-style: none; }
+        header nav a { font-weight: 600; font-size: 16px; position: relative; padding: 5px 0; }
+        header nav a:hover { color: var(--primary-green); }
+        header nav a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background-color: var(--primary-green); transition: width 0.3s; }
+        header nav a:hover::after { width: 100%; }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
 
-        <div class="footerWraper3">
-            <div class="uni-info">
-                <a href="https://www.engr.uga.edu/" target="_blank" rel="nooperner">
-                    <img src="/staticFiles/assets/uga-eng-logo.png">
-                </a>
-            </div>
-            <div class="copyright">
-                <p>Copyright @ 2023 KnerLab All Rights Reserved<br>By Ming Song</p>
-            </div>
-        </div>
+        /* Main */
+        main { padding-top: 100px; padding-bottom: 60px; position: relative; }
+
+        /* Canvas Animation Container */
+        #canvas-container {
+            width: 100%;
+            height: 500px; /* Increased height for larger image */
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #particleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
         
+        /* Restored Word Cloud Image - Bigger & No Halo */
+        .header-wordcloud {
+            position: relative;
+            z-index: 1;
+            /* Increased size */
+            max-width: 90%; 
+            max-height: 90%;
+            object-fit: contain;
+            /* Removed drop-shadow/halo */
+            filter: none; 
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Publications Content Styling */
+        .publications-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #111;
+            border-radius: 10px;
+            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            /* Reset counter at start of container */
+            counter-reset: pub-counter; 
+        }
+
+        /* Targeting Structure based on docx_to_html in app.py:
+           <div class="years"><h2>Year</h2></div>
+           <div class="pubs"><p>Text...</p></div>
+        */
+
+        /* Year Headers Styling - Big Green Text */
+        .years h2, .years p {
+            color: var(--primary-green);
+            margin: 50px 0 20px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--primary-green);
+            font-size: 2.5rem; /* Large font */
+            font-weight: 800;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        /* Reset/Disable numbering for Year headers specifically */
+        .years p::before, .years h2::before {
+            content: none !important;
+            counter-increment: none !important;
+        }
+
+        /* Publication Items Styling */
+        .pubs p {
+            position: relative;
+            padding-left: 40px; /* Space for number */
+            margin-bottom: 25px;
+            color: var(--text-gray);
+            text-indent: 0;
+            text-align: justify;
+            font-size: 1rem;
+            line-height: 1.6;
+            border-bottom: 1px solid #222; /* Separator between papers */
+            padding-bottom: 15px;
+        }
+        
+        /* Add Numbers via CSS ONLY for .pubs p */
+        .pubs p::before {
+            counter-increment: pub-counter;
+            content: counter(pub-counter) ".";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: bold;
+            color: var(--primary-green);
+            width: 30px;
+            text-align: right;
+            font-size: 1.1rem;
+        }
+        
+        .publications-container a { color: var(--primary-green); text-decoration: none; border-bottom: 1px dotted var(--primary-green); }
+        .publications-container a:hover { border-bottom: 1px solid var(--primary-green); }
+
+        /* Footer */
+        footer { background-color: #000; padding: 50px 0 20px; border-top: 1px solid #222; }
+        .footer-content { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; gap: 60px; }
+        .footer-logo { font-size: 2rem; font-weight: bold; color: white; }
+        .social-links { display: flex; gap: 40px; }
+        .social-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .social-item img { width: 50px; height: 50px; border-radius: 50%; border: 1px solid white; transition: 0.3s; background-color: black; }
+        .social-item:hover img { transform: scale(1.1) rotate(5deg); border-color: var(--primary-green); }
+        .social-item p { font-size: 0.8rem; color: var(--text-gray); }
+        .progress-bar-container { width: 100%; max-width: 750px; height: 4px; background: #222; margin: 40px auto; position: relative; overflow: hidden; border-radius: 2px; }
+        .progress-bar { width: 100%; height: 100%; background: linear-gradient(90deg, var(--primary-green), #ffdb3a, var(--primary-green)); background-size: 200% 100%; animation: gradientMove 3s linear infinite; }
+        @keyframes gradientMove { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        .footer-bottom { max-width: 750px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0 20px; gap: 20px; }
+        .uni-info img { width: 200px; height: auto; opacity: 0.8; transition: opacity 0.3s; }
+        .uni-info img:hover { opacity: 1; }
+        .copyright { text-align: right; color: #636363; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .nav-toggle { display: block; z-index: 1001; }
+            header nav ul { position: fixed; top: 0; right: 0; height: 100vh; width: 70%; background: rgba(0,0,0,0.95); flex-direction: column; justify-content: center; align-items: center; transform: translateX(100%); transition: 0.3s; }
+            header nav ul.active { transform: translateX(0); }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .publications-container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png" alt="Lab Logo"></a>
+        <button class="nav-toggle">&#9776;</button>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('research') }}">Research</a></li>
+                <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
+                <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Particle Header with Floating Image -->
+        <div id="canvas-container">
+            <canvas id="particleCanvas"></canvas>
+            <!-- Restored Image with No Halo -->
+            <img class="header-wordcloud" src="/staticFiles/files/style_cloud.png" alt="Publications Word Cloud" onerror="this.style.display='none'">
+        </div>
+
+        <section class="publications-container">
+            <!-- Content injected from backend -->
+            {{ content|safe }}
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">KnerLab</div>
+            <div class="social-links">
+                <div class="social-item">
+                    <a href="https://github.com/Knerlab" target="_blank"><img src="/staticFiles/assets/github_icon_sqr.png" alt="Github" onerror="this.src='https://via.placeholder.com/40x40?text=GH'"></a>
+                    <p>Github</p>
+                </div>
+                <div class="social-item">
+                    <a href="https://www.instagram.com/knerlab/" target="_blank"><img src="/staticFiles/assets/instagram_icon_sqr.png" alt="Instagram" onerror="this.src='https://via.placeholder.com/40x40?text=IG'"></a>
+                    <p>Instagram</p>
+                </div>
+                <div class="social-item">
+                    <a href="mailto:kner@uga.edu"><img src="/staticFiles/assets/email_icon_sqr.png" alt="Email" onerror="this.src='https://via.placeholder.com/40x40?text=Em'"></a>
+                    <p>Contact</p>
+                </div>
+            </div>
+        </div>
+        <div class="progress-bar-container"><div class="progress-bar"></div></div>
+        <div class="footer-bottom">
+            <div class="uni-info"><a href="https://www.engr.uga.edu/" target="_blank"><img src="/staticFiles/assets/uga-eng-logo.png" alt="UGA Logo"></a></div>
+            <div class="copyright"><p>Copyright @ 2025 KnerLab All Rights Reserved</p><p>By Ming Song</p></div>
+        </div>
     </footer>
 
+    <script>
+        // Nav Toggle
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('header nav ul').classList.toggle('active');
+        });
 
+        // Particle Animation
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        
+        function resize() {
+            canvas.width = document.getElementById('canvas-container').offsetWidth;
+            canvas.height = document.getElementById('canvas-container').offsetHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
 
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = `rgba(60, 174, 113, ${Math.random()})`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+                if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            for (let i = 0; i < 50; i++) particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                // Draw connections
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(60, 174, 113, ${1 - distance/100})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+    </script>
+</body>
 </html>
