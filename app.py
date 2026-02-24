@@ -160,5 +160,9 @@ def research():
 def teaching_lectures():
     return render_template('teaching_lectures.html') 
 
+@app.route('/journalclub')
+def journalclub():
+    return render_template('journalclub.html')
+
 if __name__=='__main__':
     app.run(debug = True, port=8000)

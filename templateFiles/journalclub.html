@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Club - Peter Kner Lab</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #3cae71;
+            --bg-black: #050505;
+            --card-bg: #111;
+            --panel-bg: #171717;
+            --text-white: #ffffff;
+            --text-gray: #c6c6c6;
+            --line: #2a2a2a;
+            --btn-blue: #3c63ff;
+            --btn-blue-hover: #274de2;
+            --btn-green: #2f985c;
+            --btn-green-hover: #267d4c;
+            --input-focus: #87b0ff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-black);
+            color: var(--text-white);
+            line-height: 1.6;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.9); height: 80px; width: 100%;
+            position: fixed; top: 0; z-index: 1000;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 5vw; border-bottom: 1px solid rgba(60, 174, 113, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        header .logo { height: 50px; width: auto; }
+        header nav ul { display: flex; gap: 30px; list-style: none; }
+        header nav a { font-weight: 600; font-size: 16px; position: relative; padding: 5px 0; }
+        header nav a:hover { color: var(--primary-green); }
+        header nav a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background-color: var(--primary-green); transition: width 0.3s; }
+        header nav a:hover::after { width: 100%; }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 28px; cursor: pointer; }
+
+        main {
+            padding-top: 120px;
+            padding-bottom: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .title-wrap {
+            margin-bottom: 26px;
+            text-align: center;
+        }
+        .title-wrap h2 {
+            font-size: 2.2rem;
+            color: var(--primary-green);
+            border-bottom: 2px solid #2e2e2e;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+        .title-wrap p {
+            margin-top: 8px;
+            color: var(--text-gray);
+        }
+
+        .app-shell {
+            background: var(--card-bg);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+        }
+
+        .panel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid #252525;
+            border-radius: 10px;
+            padding: 14px;
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel h3 {
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            color: #e7e7e7;
+        }
+
+        .input-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 6px;
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
+            margin-bottom: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        .input-scroll::-webkit-scrollbar { width: 7px; }
+        .input-scroll::-webkit-scrollbar-thumb { background: #3a3a3a; border-radius: 999px; }
+
+        .name-row {
+            display: grid;
+            grid-template-columns: 40px 1fr;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .row-index {
+            color: #9ca3af;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        .name-row input {
+            width: 100%;
+            background: #101014;
+            border: 1px solid #2c2d36;
+            color: #f5f6f7;
+            border-radius: 7px;
+            padding: 7px 9px;
+            font-size: 0.98rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .name-row input:focus {
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 2px rgba(135, 176, 255, 0.15);
+        }
+
+        .row-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 8px;
+            color: #fff;
+            padding: 9px 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .btn-add { background: var(--btn-blue); }
+        .btn-add:hover { background: var(--btn-blue-hover); }
+        .btn-draw { background: var(--btn-green); min-width: 120px; }
+        .btn-draw:hover { background: var(--btn-green-hover); }
+        .btn-save { background: var(--btn-blue); min-width: 120px; }
+        .btn-save:hover { background: var(--btn-blue-hover); }
+
+        .result-list {
+            flex: 1;
+            overflow-y: auto;
+            border-top: 1px solid #222;
+            border-bottom: 1px solid #222;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .result-item {
+            margin-bottom: 6px;
+            color: #edf0f3;
+            font-size: 1rem;
+        }
+        .result-empty {
+            color: #8a9097;
+            font-size: 0.96rem;
+        }
+
+        .control-row {
+            margin-top: 16px;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hint {
+            margin-top: 12px;
+            color: var(--text-gray);
+            min-height: 22px;
+            text-align: center;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        footer { background-color: #000; padding: 50px 0 20px; border-top: 1px solid #222; }
+        .footer-content { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; max-width: 1200px; margin: 0 auto; gap: 60px; }
+        .footer-logo { font-size: 2rem; font-weight: bold; color: white; }
+        .social-links { display: flex; gap: 40px; }
+        .social-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .social-item img { width: 50px; height: 50px; border-radius: 50%; border: 1px solid white; transition: 0.3s; background-color: black; }
+        .social-item:hover img { transform: scale(1.1) rotate(5deg); border-color: var(--primary-green); }
+        .social-item p { font-size: 0.8rem; color: var(--text-gray); }
+        .progress-bar-container { width: 100%; max-width: 750px; height: 4px; background: #222; margin: 40px auto; position: relative; overflow: hidden; border-radius: 2px; }
+        .progress-bar { width: 100%; height: 100%; background: linear-gradient(90deg, var(--primary-green), #ffdb3a, var(--primary-green)); background-size: 200% 100%; animation: gradientMove 3s linear infinite; }
+        @keyframes gradientMove { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+        .footer-bottom { max-width: 750px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0 20px; gap: 20px; }
+        .uni-info img { width: 200px; height: auto; opacity: 0.8; transition: opacity 0.3s; }
+        .uni-info img:hover { opacity: 1; }
+        .copyright { text-align: right; color: #636363; font-size: 0.9rem; }
+
+        @media (max-width: 900px) {
+            .panel-grid { grid-template-columns: 1fr; }
+            .panel { min-height: 320px; }
+        }
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .nav-toggle { display: block; z-index: 1001; }
+            header nav ul { position: fixed; top: 0; right: 0; height: 100vh; width: 70%; background: rgba(0,0,0,0.95); flex-direction: column; justify-content: center; align-items: center; transform: translateX(100%); transition: 0.3s; }
+            header nav ul.active { transform: translateX(0); }
+            .footer-bottom { flex-direction: column; text-align: center; }
+            .control-row { justify-content: stretch; }
+            .control-row .btn { flex: 1; min-width: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png" alt="Lab Logo"></a>
+        <button class="nav-toggle">&#9776;</button>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('research') }}">Research</a></li>
+                <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                <li><a href="{{ url_for('labMembers') }}">Lab Members</a></li>
+                <li><a href="{{ url_for('teaching_lectures') }}">Teaching & Lectures</a></li>
+                <li><a href="{{ url_for('journalclub') }}">Journal Club</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="title-wrap">
+            <h2>Journal Club Draw Tool</h2>
+        </div>
+
+        <section class="app-shell">
+            <div class="panel-grid">
+                <div class="panel">
+                    <h3>Names (one per row)</h3>
+                    <div class="input-scroll" id="inputScroll"></div>
+                    <div class="row-actions">
+                        <button id="addRowBtn" class="btn btn-add">+ Add row</button>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h3>Random Shuffle Result</h3>
+                    <div class="result-list" id="resultList">
+                        <p class="result-empty">No result yet.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-row">
+                <button id="drawBtn" class="btn btn-draw">Draw</button>
+                <button id="saveBtn" class="btn btn-save" disabled>Save CSV</button>
+            </div>
+            <div class="hint" id="hintText"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">KnerLab</div>
+            <div class="social-links">
+                <div class="social-item">
+                    <a href="https://github.com/Knerlab" target="_blank"><img src="/staticFiles/assets/github_icon_sqr.png" alt="Github" onerror="this.src='https://via.placeholder.com/40x40?text=GH'"></a>
+                    <p>Github</p>
+                </div>
+                <div class="social-item">
+                    <a href="https://www.instagram.com/knerlab/" target="_blank"><img src="/staticFiles/assets/instagram_icon_sqr.png" alt="Instagram" onerror="this.src='https://via.placeholder.com/40x40?text=IG'"></a>
+                    <p>Instagram</p>
+                </div>
+                <div class="social-item">
+                    <a href="mailto:kner@uga.edu"><img src="/staticFiles/assets/email_icon_sqr.png" alt="Email" onerror="this.src='https://via.placeholder.com/40x40?text=Em'"></a>
+                    <p>Contact</p>
+                </div>
+            </div>
+        </div>
+        <div class="progress-bar-container"><div class="progress-bar"></div></div>
+        <div class="footer-bottom">
+            <div class="uni-info"><a href="https://www.engr.uga.edu/" target="_blank"><img src="/staticFiles/assets/uga-eng-logo.png" alt="UGA Logo"></a></div>
+            <div class="copyright"><p>Copyright @ 2025 KnerLab All Rights Reserved</p><p>By Ming Song</p></div>
+        </div>
+    </footer>
+
+    <script>
+        const navToggle = document.querySelector('.nav-toggle');
+        const navUl = document.querySelector('header nav ul');
+        navToggle.addEventListener('click', () => { navUl.classList.toggle('active'); });
+
+        const inputScroll = document.getElementById('inputScroll');
+        const resultList = document.getElementById('resultList');
+        const addRowBtn = document.getElementById('addRowBtn');
+        const drawBtn = document.getElementById('drawBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const hintText = document.getElementById('hintText');
+
+        let rows = Array.from({ length: 5 }, () => '');
+        let shuffling = false;
+        let shuffleTimer = null;
+        let shuffledOrder = [];
+        const SHUFFLE_INTERVAL_MS = 80;
+
+        function formatIndex(i) {
+            return String(i + 1).padStart(2, '0');
+        }
+
+        function renderRows(focusIndex = null) {
+            inputScroll.innerHTML = '';
+            rows.forEach((value, i) => {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'name-row';
+
+                const indexDiv = document.createElement('div');
+                indexDiv.className = 'row-index';
+                indexDiv.textContent = formatIndex(i);
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.maxLength = 40;
+                input.value = value;
+                input.placeholder = 'Type name';
+                input.addEventListener('input', (event) => {
+                    rows[i] = event.target.value;
+                });
+                input.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        focusNextRow(i);
+                    }
+                });
+
+                rowDiv.appendChild(indexDiv);
+                rowDiv.appendChild(input);
+                inputScroll.appendChild(rowDiv);
+            });
+
+            if (focusIndex !== null) {
+                const inputs = inputScroll.querySelectorAll('input');
+                const target = inputs[focusIndex];
+                if (target) {
+                    target.focus();
+                    target.setSelectionRange(target.value.length, target.value.length);
+                    target.scrollIntoView({ block: 'nearest' });
+                }
+            }
+        }
+
+        function focusNextRow(currentIndex) {
+            if (currentIndex === rows.length - 1) {
+                rows.push('');
+                renderRows(currentIndex + 1);
+                return;
+            }
+            const inputs = inputScroll.querySelectorAll('input');
+            const next = inputs[currentIndex + 1];
+            if (next) {
+                next.focus();
+                next.select();
+            }
+        }
+
+        function getUniqueNames() {
+            const seen = new Set();
+            const out = [];
+            rows.forEach((raw) => {
+                const name = raw.trim();
+                if (!name || seen.has(name)) {
+                    return;
+                }
+                seen.add(name);
+                out.push(name);
+            });
+            return out;
+        }
+
+        function randomShuffle(array) {
+            const cloned = array.slice();
+            for (let i = cloned.length - 1; i > 0; i -= 1) {
+                const j = Math.floor(Math.random() * (i + 1));
+                const temp = cloned[i];
+                cloned[i] = cloned[j];
+                cloned[j] = temp;
+            }
+            return cloned;
+        }
+
+        function renderResult(order) {
+            resultList.innerHTML = '';
+            if (!order.length) {
+                resultList.innerHTML = '<p class="result-empty">No result yet.</p>';
+                return;
+            }
+
+            order.forEach((name, idx) => {
+                const item = document.createElement('p');
+                item.className = 'result-item';
+                item.textContent = `${String(idx + 1).padStart(2, '0')}. ${name}`;
+                resultList.appendChild(item);
+            });
+        }
+
+        function updateButtons() {
+            drawBtn.textContent = shuffling ? 'Stop' : 'Draw';
+            drawBtn.classList.toggle('btn-add', !shuffling);
+            drawBtn.classList.toggle('btn-draw', shuffling);
+            saveBtn.disabled = shuffling || shuffledOrder.length === 0;
+        }
+
+        function startShuffle() {
+            const names = getUniqueNames();
+            if (!names.length) {
+                hintText.textContent = 'Please enter at least one name before drawing.';
+                return;
+            }
+
+            hintText.textContent = '';
+            shuffling = true;
+            shuffledOrder = randomShuffle(names);
+            renderResult(shuffledOrder);
+            updateButtons();
+
+            shuffleTimer = window.setInterval(() => {
+                const latestNames = getUniqueNames();
+                if (!latestNames.length) {
+                    stopShuffle();
+                    return;
+                }
+                shuffledOrder = randomShuffle(latestNames);
+                renderResult(shuffledOrder);
+            }, SHUFFLE_INTERVAL_MS);
+        }
+
+        function stopShuffle() {
+            shuffling = false;
+            if (shuffleTimer !== null) {
+                window.clearInterval(shuffleTimer);
+                shuffleTimer = null;
+            }
+            updateButtons();
+        }
+
+        function escapeCsvField(text) {
+            if (text.includes(',') || text.includes('"') || text.includes('\n')) {
+                return `"${text.replace(/"/g, '""')}"`;
+            }
+            return text;
+        }
+
+        function buildTimestamp() {
+            const now = new Date();
+            const pad = (num) => String(num).padStart(2, '0');
+            return [
+                now.getFullYear(),
+                pad(now.getMonth() + 1),
+                pad(now.getDate()),
+                '_',
+                pad(now.getHours()),
+                pad(now.getMinutes()),
+                pad(now.getSeconds())
+            ].join('');
+        }
+
+        function saveCsv() {
+            if (!shuffledOrder.length || shuffling) {
+                return;
+            }
+
+            const lines = ['index,name'];
+            shuffledOrder.forEach((name, i) => {
+                lines.push(`${i + 1},${escapeCsvField(name)}`);
+            });
+            const csvText = `${lines.join('\n')}\n`;
+            const fileName = `presentation_order_${buildTimestamp()}.csv`;
+
+            const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            hintText.textContent = `CSV downloaded: ${fileName}`;
+        }
+
+        addRowBtn.addEventListener('click', () => {
+            rows.push('');
+            renderRows(rows.length - 1);
+        });
+
+        drawBtn.addEventListener('click', () => {
+            if (shuffling) {
+                stopShuffle();
+            } else {
+                startShuffle();
+            }
+        });
+
+        saveBtn.addEventListener('click', saveCsv);
+
+        renderRows();
+        renderResult([]);
+        updateButtons();
+    </script>
+</body>
+</html>
