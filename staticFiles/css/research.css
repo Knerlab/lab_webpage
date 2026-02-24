@@ -1,0 +1,118 @@
+/* ------------------- CSS Variables & Reset ------------------- */
+:root {
+    --primary-green: #3cae71;
+    --bg-black: #050505;
+    --text-white: #ffffff;
+    --text-gray: #c6c6c6;
+    --card-border: #349b64;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* ------------------- Main Content ------------------- */
+main { padding-top: 120px; padding-bottom: 60px; }
+
+.page-title {
+    text-align: center;
+    margin-bottom: 80px;
+    opacity: 0;
+    animation: fadeInDown 1s forwards;
+}
+.page-title h2 {
+    font-size: 2.5rem;
+    color: var(--primary-green);
+    display: inline-block;
+    border-bottom: 2px solid var(--primary-green);
+    padding-bottom: 10px;
+}
+
+/* Research Items Layout */
+.research-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+
+.research-item {
+    display: flex;
+    align-items: flex-start; /* Align top */
+    gap: 50px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #1a1a1a;
+}
+
+.research-item:last-child { border-bottom: none; }
+
+.research-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Alternating Layout */
+.research-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+/* FIXED: Image Box Logic */
+.research-img-box {
+    flex: 1;
+    /* Removed fixed height/min-height constraints to allow natural aspect ratio */
+    width: 100%; 
+    border-radius: 8px;
+    overflow: hidden;
+    /* background: #fff; Optional: White bg if transparency looks bad on black */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    border: 1px solid #333;
+}
+
+.research-img-box img {
+    width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    object-fit: contain; /* Ensure full image is seen */
+}
+
+.research-content {
+    flex: 1;
+    padding-top: 10px;
+}
+
+.research-content h3 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--text-white);
+    position: relative;
+}
+
+.research-content h3::before {
+    content: '';
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background: var(--primary-green);
+}
+
+.research-content p {
+    font-size: 1.1rem;
+    color: var(--text-gray);
+    line-height: 1.8;
+    text-align: justify;
+}
+
+@media (max-width: 900px) {
+    .research-item, .research-item:nth-child(even) { flex-direction: column; gap: 20px; }
+}
+
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+

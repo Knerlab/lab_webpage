@@ -1,0 +1,119 @@
+:root {
+    --primary-green: #3cae71;
+    --bg-black: #050505;
+    --text-white: #ffffff;
+    --text-gray: #dddddd;
+}
+
+/* Main */
+main { padding-top: 100px; padding-bottom: 60px; position: relative; }
+
+/* Canvas Animation Container */
+#canvas-container {
+    width: 100%;
+    height: 500px; /* Increased height for larger image */
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#particleCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* Restored Word Cloud Image - Bigger & No Halo */
+.header-wordcloud {
+    position: relative;
+    z-index: 1;
+    /* Increased size */
+    max-width: 90%; 
+    max-height: 90%;
+    object-fit: contain;
+    /* Removed drop-shadow/halo */
+    filter: none; 
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Publications Content Styling */
+.publications-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #111;
+    border-radius: 10px;
+    border: 1px solid #333;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    /* Reset counter at start of container */
+    counter-reset: pub-counter; 
+}
+
+/* Targeting Structure based on docx_to_html in app.py:
+   <div class="years"><h2>Year</h2></div>
+   <div class="pubs"><p>Text...</p></div>
+*/
+
+/* Year Headers Styling - Big Green Text */
+.years h2, .years p {
+    color: var(--primary-green);
+    margin: 50px 0 20px 0;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--primary-green);
+    font-size: 2.5rem; /* Large font */
+    font-weight: 800;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+/* Reset/Disable numbering for Year headers specifically */
+.years p::before, .years h2::before {
+    content: none !important;
+    counter-increment: none !important;
+}
+
+/* Publication Items Styling */
+.pubs p {
+    position: relative;
+    padding-left: 40px; /* Space for number */
+    margin-bottom: 25px;
+    color: var(--text-gray);
+    text-indent: 0;
+    text-align: justify;
+    font-size: 1rem;
+    line-height: 1.6;
+    border-bottom: 1px solid #222; /* Separator between papers */
+    padding-bottom: 15px;
+}
+
+/* Add Numbers via CSS ONLY for .pubs p */
+.pubs p::before {
+    counter-increment: pub-counter;
+    content: counter(pub-counter) ".";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: bold;
+    color: var(--primary-green);
+    width: 30px;
+    text-align: right;
+    font-size: 1.1rem;
+}
+
+.publications-container a { color: var(--primary-green); text-decoration: none; border-bottom: 1px dotted var(--primary-green); }
+.publications-container a:hover { border-bottom: 1px solid var(--primary-green); }
+
+@media (max-width: 768px) {
+    .publications-container { padding: 20px; }
+}
+

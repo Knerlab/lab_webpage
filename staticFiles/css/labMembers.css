@@ -1,0 +1,166 @@
+:root {
+    --primary-green: #1c5f3b;
+    --bg-black: #050505;
+    --card-bg: #121212;
+    --text-white: #ffffff;
+    --text-gray: #b0b0b0;
+}
+
+/* Main Container - increased max-width slightly for better PI card fit */
+main { padding-top: 100px; max-width: 1300px; margin: 0 auto; padding-bottom: 60px; padding-left: 20px; padding-right: 20px;}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.8rem;
+    color: var(--primary-green);
+    border-left: 4px solid var(--primary-green);
+    padding-left: 15px;
+    margin: 60px 0 30px;
+    font-weight: 700;
+}
+
+/* PI Section - WIDER LAYOUT */
+.pi-card {
+    display: flex;
+    background-color: var(--card-bg);
+    border: 1px solid #333;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 40px;
+    /* Allow height to grow with content, but keep min height */
+    min-height: 450px; 
+    flex-wrap: wrap; /* Ensure responsive wrapping on small screens */
+}
+.pi-img {
+    /* Increased width ratio to show more of the image */
+    flex: 0 0 45%; 
+    min-width: 350px; /* Minimum width before wrapping */
+    position: relative;
+    background-color: #000;
+}
+.pi-img img {
+    width: 100%;
+    height: 100%;
+    /* Object-fit contain ensures full image is visible, cover fills the space */
+    /* Using cover with a better position often looks best for portraits */
+    object-fit: cover; 
+    object-position: top center; /* Focus on face */
+    display: block;
+}
+.pi-info {
+    padding: 40px;
+    flex: 1; /* Takes remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.pi-name { font-size: 2.5rem; font-weight: bold; margin-bottom: 5px; color: var(--text-white); }
+.pi-title { color: var(--primary-green); font-size: 1.3rem; margin-bottom: 25px; }
+.pi-section-label { font-size: 0.9rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 20px; margin-bottom: 8px; border-bottom: 1px solid #333; display: inline-block; }
+.pi-desc { color: var(--text-gray); font-size: 1.05rem; line-height: 1.7; }
+
+/* Members Grid */
+.members-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.member-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #222;
+    transition: transform 0.3s, border-color 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-green);
+}
+
+.member-header {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+    align-items: center;
+    border-bottom: 1px solid #222;
+    background: #181818;
+}
+
+.member-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-green);
+}
+
+.member-title h3 { font-size: 1.2rem; margin-bottom: 5px; }
+.member-title span { color: var(--primary-green); font-size: 0.9rem; font-weight: 600; }
+
+.member-bio {
+    padding: 20px;
+    font-size: 0.95rem;
+    color: var(--text-gray);
+    flex-grow: 1;
+    line-height: 1.5;
+}
+
+/* FIXED: Green Background for Visibility */
+.member-social {
+    padding: 15px 20px;
+    background-color: var(--primary-green); /* Green background */
+    display: flex;
+    gap: 20px;
+    border-top: 1px solid #222;
+}
+
+.member-social img {
+    width: 24px;
+    height: 24px;
+    /* White icons on green background */
+    filter: brightness(0) invert(1); 
+    opacity: 0.9;
+    transition: all 0.3s;
+}
+.member-social a:hover img { 
+    opacity: 1; 
+    transform: scale(1.1); 
+}
+
+/* Alumni Styling */
+.alumni-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.alumni-card {
+    background: #111;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border-left: 3px solid #333;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+.alumni-card:hover {
+    background: #1a1a1a;
+    border-left-color: var(--primary-green);
+    transform: translateX(5px);
+}
+
+.alumni-name { font-weight: bold; color: white; font-size: 1.1rem; }
+.alumni-role { color: var(--primary-green); font-size: 0.85rem; margin-bottom: 5px; }
+.alumni-now { color: #888; font-size: 0.9rem; }
+
+@media (max-width: 768px) {
+    .pi-card { flex-direction: column; }
+    .pi-img { height: 350px; width: 100%; min-width: 100%; } /* Reset min-width for mobile */
+}
+

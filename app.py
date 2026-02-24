@@ -1,8 +1,9 @@
 from flask import Flask, render_template
-from flask import redirect, url_for
+from flask import redirect, url_for, request, jsonify
 from docx import Document
 import docx
 import os
+import csv
 from pdb import set_trace as st
 import re
 from datetime import datetime
@@ -128,6 +129,9 @@ Flask server
 # Provide template folder name
 # The default folder name should be "templates" else need to mention custom folder name
 app = Flask(__name__, template_folder='templateFiles', static_folder='staticFiles')
+JOURNALCLUB_DRAW_DIR = os.path.join(app.static_folder, 'journalclub_draw')
+JOURNALCLUB_RECORDS_FILE = os.path.join(JOURNALCLUB_DRAW_DIR, 'journalclub_records.csv')
+os.makedirs(JOURNALCLUB_DRAW_DIR, exist_ok=True)
 
 
 @app.route('/')
@@ -163,6 +167,68 @@ def teaching_lectures():
 @app.route('/journalclub')
 def journalclub():
     return render_template('journalclub.html')
+
+@app.route('/api/journalclub/record', methods=['POST'])
+def record_journalclub_result():
+    payload = request.get_json(silent=True) or {}
+
+    semester = str(payload.get('semester', '')).strip().lower()
+    year = str(payload.get('year', '')).strip()
+    order = payload.get('order', [])
+
+    if semester not in {'spring', 'winter'}:
+        return jsonify({'error': 'Invalid semester.'}), 400
+
+    if not year.isdigit():
+        return jsonify({'error': 'Invalid year.'}), 400
+
+    if not isinstance(order, list) or not order:
+        return jsonify({'error': 'Invalid order list.'}), 400
+
+    cleaned_order = [str(name).strip() for name in order if str(name).strip()]
+    if not cleaned_order:
+        return jsonify({'error': 'Order list is empty.'}), 400
+
+    saved_at = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    csv_exists = os.path.exists(JOURNALCLUB_RECORDS_FILE)
+
+    with open(JOURNALCLUB_RECORDS_FILE, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        if not csv_exists:
+            writer.writerow(['saved_at', 'semester', 'year', 'order_count', 'order'])
+        writer.writerow([
+            saved_at,
+            semester,
+            year,
+            len(cleaned_order),
+            ' | '.join(cleaned_order)
+        ])
+
+    return jsonify({
+        'success': True,
+        'saved_at': saved_at,
+        'file': 'staticFiles/journalclub_draw/journalclub_records.csv'
+    })
+
+@app.route('/api/journalclub/records', methods=['GET'])
+def get_journalclub_records():
+    if not os.path.exists(JOURNALCLUB_RECORDS_FILE):
+        return jsonify({'records': []})
+
+    records = []
+    with open(JOURNALCLUB_RECORDS_FILE, 'r', newline='', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            order_raw = (row.get('order') or '').strip()
+            order_list = [name.strip() for name in order_raw.split('|') if name.strip()]
+            records.append({
+                'recordedAt': row.get('saved_at', ''),
+                'semester': (row.get('semester') or '').strip(),
+                'year': (row.get('year') or '').strip(),
+                'order': order_list
+            })
+
+    return jsonify({'records': records})
 
 if __name__=='__main__':
     app.run(debug = True, port=8000)
