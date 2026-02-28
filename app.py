@@ -7,23 +7,6 @@ import csv
 from pdb import set_trace as st
 import re
 from datetime import datetime
-# from wordcloud import WordCloud
-import stylecloud
-import matplotlib.pyplot as plt
-from PIL import ImageDraw, ImageFont, Image
-
-# ---------------------------------------------------------------------
-# Monkey patch for Pillow 10+ compatibility
-# 修复 'ImageDraw' object has no attribute 'textsize' 报错
-if not hasattr(ImageDraw.ImageDraw, 'textsize'):
-    def textsize(self, text, font=None, *args, **kwargs):
-        if font is None:
-            font = self.getfont()
-        # 使用 getmask 获取文本尺寸 (width, height)
-        return font.getmask(text).size
-    
-    ImageDraw.ImageDraw.textsize = textsize
-# ---------------------------------------------------------------------
 
 ######################################################################################################################################################
 '''
@@ -84,39 +67,38 @@ def extract_italic_words_from_docx(filepath):
     return ' '.join(italic_words)
 
 
-if not os.path.exists("staticFiles/files/style_cloud.png"):
-    # Extract italic text from the .docx file
-    docx_filename = 'staticFiles/files/Publications_website.docx'
-    
-    # 
-    if os.path.exists(docx_filename):
-        text = extract_italic_words_from_docx(docx_filename).replace('using', '')
+def ensure_style_cloud_exists():
+    output_path = os.path.join('staticFiles', 'files', 'style_cloud.png')
+    if os.path.exists(output_path):
+        return
 
-        # Generate the word cloud using stylecloud
-        # Changed background_color to None for transparent background
-        stylecloud.gen_stylecloud(text=text,
-                                icon_name="fas fa-microscope",
-                                palette="colorbrewer.diverging.Spectral_11",
-                                background_color="rgba(0,0,0,0)",
-                                gradient="horizontal",
-                                max_words=100,
-                                output_name="staticFiles/files/style_cloud.png")
-    else:
+    docx_filename = os.path.join('staticFiles', 'files', 'Publications_website.docx')
+    if not os.path.exists(docx_filename):
         print(f"Warning: {docx_filename} not found. Skipping wordcloud generation.")
-        
-    # img = Image.open("staticFiles/files/style_cloud.png").convert("RGBA")
+        return
 
-    # datas = img.getdata()
-    # new_data = []
-    # for item in datas:
+    # Lazy import to reduce baseline memory on small servers.
+    import stylecloud
+    from PIL import ImageDraw
 
-    #     if item[0] > 250 and item[1] > 250 and item[2] > 250:
-    #         new_data.append((255, 255, 255, 0))
-    #     else:
-    #         new_data.append(item)
+    # Pillow 10+ compatibility for stylecloud internals.
+    if not hasattr(ImageDraw.ImageDraw, 'textsize'):
+        def textsize(self, text, font=None, *args, **kwargs):
+            if font is None:
+                font = self.getfont()
+            return font.getmask(text).size
+        ImageDraw.ImageDraw.textsize = textsize
 
-    # img.putdata(new_data)
-    # img.save("staticFiles/files/style_cloud1.png", "PNG")
+    text = extract_italic_words_from_docx(docx_filename).replace('using', '')
+    stylecloud.gen_stylecloud(
+        text=text,
+        icon_name="fas fa-microscope",
+        palette="colorbrewer.diverging.Spectral_11",
+        background_color="rgba(0,0,0,0)",
+        gradient="horizontal",
+        max_words=100,
+        output_name=output_path
+    )
 
 
 
@@ -134,6 +116,15 @@ JOURNALCLUB_RECORDS_FILE = os.path.join(JOURNALCLUB_DRAW_DIR, 'journalclub_recor
 os.makedirs(JOURNALCLUB_DRAW_DIR, exist_ok=True)
 
 
+@app.after_request
+def set_response_headers(response):
+    if request.path.startswith('/staticFiles/'):
+        response.headers.setdefault('Cache-Control', 'public, max-age=2592000, immutable')
+    elif request.path.startswith('/api/'):
+        response.headers.setdefault('Cache-Control', 'no-store')
+    return response
+
+
 @app.route('/')
 def index():
     return redirect(url_for('home'))
@@ -149,6 +140,12 @@ def publications():
         content = docx_to_html(file_path)
     else:
         content = "<p>Publications file not found.</p>"
+
+    try:
+        ensure_style_cloud_exists()
+    except Exception as exc:
+        print(f"Warning: wordcloud generation skipped due to error: {exc}")
+
     # st()
     return render_template('publications.html', content=content) 
 
