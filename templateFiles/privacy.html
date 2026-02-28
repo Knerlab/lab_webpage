@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Notice - Peter Kner Lab</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <style>
+        main { max-width: 900px; margin: 0 auto; padding: 115px 20px 50px; }
+        h1 { color: #3cae71; margin-bottom: 16px; }
+        h2 { margin: 18px 0 8px; color: #e5e7eb; font-size: 1.06rem; }
+        p, li { color: #d1d5db; line-height: 1.75; }
+        ul { padding-left: 20px; }
+        .muted { color: #9ca3af; font-size: 0.92rem; margin-top: 16px; }
+        .mono { font-family: Consolas, Monaco, monospace; }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png" alt="Lab Logo"></a>
+        <button class="nav-toggle">&#9776;</button>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('research') }}">Research</a></li>
+                <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                <li><a href="{{ url_for('privacy') }}">Privacy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Privacy Notice</h1>
+        <p>This website records basic visit analytics for operational and research-outreach metrics.</p>
+
+        <h2>What We Collect</h2>
+        <ul>
+            <li>Visit timestamp, page path, response status.</li>
+            <li>Masked IP address (example: <span class="mono">192.168.1.*</span>).</li>
+            <li>Approximate location fields from proxy/CDN headers when available (country/city).</li>
+            <li>Browser user-agent and referer URL (truncated for storage limits).</li>
+        </ul>
+
+        <h2>How We Protect Data</h2>
+        <ul>
+            <li>Raw IP is not stored in analytics files; only masked IP is saved.</li>
+            <li>An anonymized visitor ID is generated using one-way hashing.</li>
+            <li>Analytics data is stored locally as compact monthly CSV files.</li>
+        </ul>
+
+        <h2>Storage</h2>
+        <p>Analytics files are stored under <span class="mono">analytics_data/visits_YYYYMM.csv</span>.</p>
+
+        <p class="muted">Last updated: 2026-02-28</p>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+</body>
+</html>

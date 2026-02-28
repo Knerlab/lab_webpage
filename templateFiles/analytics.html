@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow">
+    <title>Analytics Dashboard - Peter Kner Lab</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/common.css') }}">
+    <style>
+        main { padding: 110px 20px 50px; max-width: 1180px; margin: 0 auto; }
+        h1 { margin-bottom: 20px; color: #3cae71; }
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 22px; }
+        .card { background: #101010; border: 1px solid #2d2d2d; border-radius: 10px; padding: 14px; }
+        .card .label { color: #9ca3af; font-size: 0.85rem; margin-bottom: 7px; }
+        .card .value { font-size: 1.7rem; font-weight: 700; color: #f3f4f6; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+        .panel-title { color: #e5e7eb; margin-bottom: 10px; font-size: 1rem; }
+        .map-wrap { margin-bottom: 16px; }
+        #worldMap { width: 100%; height: 430px; background: #0c0c0c; border-radius: 10px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border-bottom: 1px solid #232323; padding: 8px 6px; text-align: left; font-size: 0.92rem; color: #d1d5db; }
+        th { color: #9ca3af; font-weight: 600; }
+        .small { color: #9ca3af; font-size: 0.85rem; margin-top: 8px; }
+        .mono { font-family: Consolas, Monaco, monospace; }
+        .privacy-note { margin-top: 16px; color: #9ca3af; font-size: 0.9rem; }
+        @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}"><img class="logo" src="/staticFiles/assets/AIL_logo.png" alt="Lab Logo"></a>
+        <button class="nav-toggle">&#9776;</button>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                <li><a href="{{ url_for('research') }}">Research</a></li>
+                <li><a href="{{ url_for('publications') }}">Publications</a></li>
+                <li><a href="{{ url_for('privacy') }}">Privacy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Website Analytics</h1>
+
+        <div class="summary-grid">
+            <div class="card">
+                <div class="label">Total Visits (Logged)</div>
+                <div class="value">{{ total_visits }}</div>
+            </div>
+            <div class="card">
+                <div class="label">Unique Visitors (Anonymized)</div>
+                <div class="value">{{ unique_visitors }}</div>
+            </div>
+            <div class="card">
+                <div class="label">Admin Token</div>
+                <div class="value">{{ 'Enabled' if token_enabled else 'Not Set' }}</div>
+            </div>
+        </div>
+
+        <section class="card map-wrap">
+            <h2 class="panel-title">Visits by Country (World Map)</h2>
+            <div id="worldMap"></div>
+            <p class="small">Map uses country headers from reverse proxy/CDN when available. Unknown countries are excluded.</p>
+        </section>
+
+        <div class="grid-2">
+            <section class="card">
+                <h2 class="panel-title">Top Countries</h2>
+                <table>
+                    <thead><tr><th>Country</th><th>Visits</th></tr></thead>
+                    <tbody>
+                    {% for name, count in top_countries %}
+                        <tr><td>{{ name }}</td><td>{{ count }}</td></tr>
+                    {% endfor %}
+                    {% if not top_countries %}
+                        <tr><td colspan="2">No data yet.</td></tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="card">
+                <h2 class="panel-title">Top Cities</h2>
+                <table>
+                    <thead><tr><th>City</th><th>Visits</th></tr></thead>
+                    <tbody>
+                    {% for name, count in top_cities %}
+                        <tr><td>{{ name }}</td><td>{{ count }}</td></tr>
+                    {% endfor %}
+                    {% if not top_cities %}
+                        <tr><td colspan="2">No data yet.</td></tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <section class="card" style="margin-bottom:16px;">
+            <h2 class="panel-title">Top Paths</h2>
+            <table>
+                <thead><tr><th>Path</th><th>Visits</th></tr></thead>
+                <tbody>
+                {% for path, count in top_paths %}
+                    <tr><td class="mono">{{ path }}</td><td>{{ count }}</td></tr>
+                {% endfor %}
+                {% if not top_paths %}
+                    <tr><td colspan="2">No data yet.</td></tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </section>
+
+        <section class="card">
+            <h2 class="panel-title">Recent Visits</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Path</th>
+                        <th>IP (Masked)</th>
+                        <th>Country</th>
+                        <th>City</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in recent_rows %}
+                    <tr>
+                        <td>{{ row.timestamp }}</td>
+                        <td class="mono">{{ row.path }}</td>
+                        <td class="mono">{{ row.ip_masked }}</td>
+                        <td>{{ row.country }}</td>
+                        <td>{{ row.city }}</td>
+                    </tr>
+                {% endfor %}
+                {% if not recent_rows %}
+                    <tr><td colspan="5">No data yet.</td></tr>
+                {% endif %}
+                </tbody>
+            </table>
+            <p class="small">Storage format: monthly CSV files in <span class="mono">analytics_data/visits_YYYYMM.csv</span>.</p>
+        </section>
+
+        <p class="privacy-note">Privacy: this dashboard uses masked IPs and anonymized visitor IDs. See full policy at <a href="{{ url_for('privacy') }}">/privacy</a>.</p>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        (function () {
+            const rawCountryCounts = {{ country_counts_all | tojson }};
+            const rows = [['Country', 'Visits']];
+
+            rawCountryCounts.forEach((entry) => {
+                if (!Array.isArray(entry) || entry.length < 2) return;
+                const name = String(entry[0] || '').trim();
+                const count = Number(entry[1] || 0);
+                if (!name || !count || name.toLowerCase() === 'unknown') return;
+                rows.push([name, count]);
+            });
+
+            if (rows.length <= 1) {
+                const el = document.getElementById('worldMap');
+                if (el) el.innerHTML = '<p style="padding:14px;color:#9ca3af;">No country data available yet.</p>';
+                return;
+            }
+
+            google.charts.load('current', {
+                packages: ['geochart']
+            });
+
+            google.charts.setOnLoadCallback(() => {
+                const data = google.visualization.arrayToDataTable(rows);
+                const chart = new google.visualization.GeoChart(document.getElementById('worldMap'));
+                chart.draw(data, {
+                    backgroundColor: '#0c0c0c',
+                    datalessRegionColor: '#1a1a1a',
+                    defaultColor: '#3cae71',
+                    colorAxis: { colors: ['#7dd8ab', '#3cae71', '#166e41'] },
+                    legend: { textStyle: { color: '#d1d5db' } },
+                    tooltip: { textStyle: { color: '#111827' } }
+                });
+
+                window.addEventListener('resize', () => {
+                    chart.draw(data, {
+                        backgroundColor: '#0c0c0c',
+                        datalessRegionColor: '#1a1a1a',
+                        defaultColor: '#3cae71',
+                        colorAxis: { colors: ['#7dd8ab', '#3cae71', '#166e41'] },
+                        legend: { textStyle: { color: '#d1d5db' } },
+                        tooltip: { textStyle: { color: '#111827' } }
+                    });
+                }, { passive: true });
+            });
+        })();
+    </script>
+</body>
+</html>

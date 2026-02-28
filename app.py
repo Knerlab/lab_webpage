@@ -4,9 +4,13 @@ from docx import Document
 import docx
 import os
 import csv
+import glob
+import hashlib
+import threading
 from pdb import set_trace as st
 import re
 from datetime import datetime
+from collections import Counter
 
 ######################################################################################################################################################
 '''
@@ -115,6 +119,147 @@ JOURNALCLUB_DRAW_DIR = os.path.join(app.static_folder, 'journalclub_draw')
 JOURNALCLUB_RECORDS_FILE = os.path.join(JOURNALCLUB_DRAW_DIR, 'journalclub_records.csv')
 os.makedirs(JOURNALCLUB_DRAW_DIR, exist_ok=True)
 
+ANALYTICS_DIR = os.path.join(os.path.dirname(__file__), 'analytics_data')
+ANALYTICS_MAX_ROWS = 15000
+ANALYTICS_MAX_RECENT_ROWS = 80
+ANALYTICS_ADMIN_TOKEN = os.environ.get('ANALYTICS_ADMIN_TOKEN', '').strip()
+os.makedirs(ANALYTICS_DIR, exist_ok=True)
+_analytics_lock = threading.Lock()
+
+
+def get_client_ip():
+    xff = (request.headers.get('X-Forwarded-For') or '').strip()
+    if xff:
+        return xff.split(',')[0].strip()
+
+    x_real_ip = (request.headers.get('X-Real-IP') or '').strip()
+    if x_real_ip:
+        return x_real_ip
+
+    return (request.remote_addr or '').strip()
+
+
+def mask_ip(ip):
+    if not ip:
+        return 'unknown'
+
+    if ':' in ip:
+        parts = ip.split(':')
+        if len(parts) >= 4:
+            return ':'.join(parts[:4]) + ':*:*:*:*'
+        return ip + ':*'
+
+    parts = ip.split('.')
+    if len(parts) == 4:
+        return '.'.join(parts[:3]) + '.*'
+    return ip
+
+
+def get_country_city_from_headers():
+    country = (
+        request.headers.get('CF-IPCountry')
+        or request.headers.get('CloudFront-Viewer-Country')
+        or request.headers.get('X-Country-Code')
+        or request.headers.get('X-Country')
+        or 'Unknown'
+    ).strip()
+
+    city = (
+        request.headers.get('CF-IPCity')
+        or request.headers.get('X-City')
+        or 'Unknown'
+    ).strip()
+
+    return country if country else 'Unknown', city if city else 'Unknown'
+
+
+def build_visitor_fingerprint(ip, user_agent):
+    raw = f'{ip}|{user_agent}'
+    return hashlib.sha256(raw.encode('utf-8')).hexdigest()[:16]
+
+
+def analytics_csv_path(now=None):
+    now = now or datetime.now()
+    return os.path.join(ANALYTICS_DIR, f'visits_{now.strftime("%Y%m")}.csv')
+
+
+def should_track_request():
+    if request.method != 'GET':
+        return False
+
+    path = request.path or ''
+    if path.startswith('/staticFiles/'):
+        return False
+    if path.startswith('/api/'):
+        return False
+    if path.startswith('/admin/analytics'):
+        return False
+    return True
+
+
+def track_visit(response):
+    if not should_track_request():
+        return
+
+    now = datetime.now()
+    path = analytics_csv_path(now)
+
+    ip = get_client_ip()
+    user_agent = (request.headers.get('User-Agent') or '').strip()
+    referer = (request.headers.get('Referer') or '').strip()
+    country, city = get_country_city_from_headers()
+
+    row = [
+        now.strftime('%Y-%m-%d %H:%M:%S'),
+        request.path or '',
+        request.method,
+        str(response.status_code),
+        mask_ip(ip),
+        build_visitor_fingerprint(ip, user_agent),
+        country,
+        city,
+        referer[:240],
+        user_agent[:240]
+    ]
+
+    with _analytics_lock:
+        exists = os.path.exists(path)
+        with open(path, 'a', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            if not exists:
+                writer.writerow([
+                    'timestamp',
+                    'path',
+                    'method',
+                    'status',
+                    'ip_masked',
+                    'visitor_id',
+                    'country',
+                    'city',
+                    'referer',
+                    'user_agent'
+                ])
+            writer.writerow(row)
+
+
+def load_analytics_rows(limit=ANALYTICS_MAX_ROWS):
+    files = sorted(glob.glob(os.path.join(ANALYTICS_DIR, 'visits_*.csv')), reverse=True)
+    rows = []
+
+    for file_path in files:
+        try:
+            with open(file_path, 'r', newline='', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                file_rows = list(reader)
+                rows.extend(file_rows[::-1])
+        except Exception:
+            continue
+
+        if len(rows) >= limit:
+            break
+
+    return rows[:limit]
+
 
 @app.after_request
 def set_response_headers(response):
@@ -122,6 +267,12 @@ def set_response_headers(response):
         response.headers.setdefault('Cache-Control', 'public, max-age=2592000, immutable')
     elif request.path.startswith('/api/'):
         response.headers.setdefault('Cache-Control', 'no-store')
+
+    try:
+        track_visit(response)
+    except Exception as exc:
+        print(f"Warning: analytics tracking skipped due to error: {exc}")
+
     return response
 
 
@@ -164,6 +315,46 @@ def teaching_lectures():
 @app.route('/journalclub')
 def journalclub():
     return render_template('journalclub.html')
+
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+
+@app.route('/admin/analytics')
+def analytics_dashboard():
+    if ANALYTICS_ADMIN_TOKEN:
+        provided = (request.args.get('token') or '').strip()
+        if provided != ANALYTICS_ADMIN_TOKEN:
+            return jsonify({'error': 'Unauthorized'}), 401
+
+    rows = load_analytics_rows(limit=ANALYTICS_MAX_ROWS)
+    total_visits = len(rows)
+    unique_visitors = len({r.get('visitor_id', '') for r in rows if r.get('visitor_id')})
+
+    country_counter = Counter()
+    city_counter = Counter()
+    path_counter = Counter()
+
+    for row in rows:
+        country_counter[(row.get('country') or 'Unknown').strip() or 'Unknown'] += 1
+        city_counter[(row.get('city') or 'Unknown').strip() or 'Unknown'] += 1
+        path_counter[(row.get('path') or '/').strip() or '/'] += 1
+
+    recent_rows = rows[:ANALYTICS_MAX_RECENT_ROWS]
+
+    return render_template(
+        'analytics.html',
+        total_visits=total_visits,
+        unique_visitors=unique_visitors,
+        country_counts_all=country_counter.most_common(),
+        top_countries=country_counter.most_common(10),
+        top_cities=city_counter.most_common(10),
+        top_paths=path_counter.most_common(10),
+        recent_rows=recent_rows,
+        token_enabled=bool(ANALYTICS_ADMIN_TOKEN)
+    )
 
 @app.route('/api/journalclub/record', methods=['POST'])
 def record_journalclub_result():
