@@ -7,6 +7,7 @@ import csv
 import glob
 import hashlib
 import threading
+import ipaddress
 from pdb import set_trace as st
 import re
 from datetime import datetime
@@ -123,8 +124,14 @@ ANALYTICS_DIR = os.path.join(os.path.dirname(__file__), 'analytics_data')
 ANALYTICS_MAX_ROWS = 15000
 ANALYTICS_MAX_RECENT_ROWS = 80
 ANALYTICS_ADMIN_TOKEN = os.environ.get('ANALYTICS_ADMIN_TOKEN', '').strip()
+ANALYTICS_GEOIP_DB_PATH = os.environ.get(
+    'ANALYTICS_GEOIP_DB_PATH',
+    os.path.join(ANALYTICS_DIR, 'GeoLite2-City.mmdb')
+)
 os.makedirs(ANALYTICS_DIR, exist_ok=True)
 _analytics_lock = threading.Lock()
+_geoip_reader = None
+_geoip_checked = False
 
 
 def get_client_ip():
@@ -173,6 +180,54 @@ def get_country_city_from_headers():
     return country if country else 'Unknown', city if city else 'Unknown'
 
 
+def get_geoip_reader():
+    global _geoip_reader, _geoip_checked
+    if _geoip_checked:
+        return _geoip_reader
+
+    _geoip_checked = True
+    if not os.path.exists(ANALYTICS_GEOIP_DB_PATH):
+        return None
+
+    try:
+        import geoip2.database
+        _geoip_reader = geoip2.database.Reader(ANALYTICS_GEOIP_DB_PATH)
+    except Exception as exc:
+        print(f"Warning: GeoIP reader init failed: {exc}")
+        _geoip_reader = None
+
+    return _geoip_reader
+
+
+def get_country_city_from_local_geoip(ip):
+    if not ip:
+        return 'Unknown', 'Unknown'
+
+    # Ignore local/private addresses.
+    try:
+        ip_obj = ipaddress.ip_address(ip)
+        if ip_obj.is_private or ip_obj.is_loopback or ip_obj.is_reserved:
+            return 'Unknown', 'Unknown'
+    except ValueError:
+        return 'Unknown', 'Unknown'
+
+    reader = get_geoip_reader()
+    if reader is None:
+        return 'Unknown', 'Unknown'
+
+    try:
+        match = reader.city(ip)
+        country = (
+            (match.country.iso_code or '').strip()
+            or (match.country.name or '').strip()
+            or 'Unknown'
+        )
+        city = (match.city.name or '').strip() or 'Unknown'
+        return country, city
+    except Exception:
+        return 'Unknown', 'Unknown'
+
+
 def build_visitor_fingerprint(ip, user_agent):
     raw = f'{ip}|{user_agent}'
     return hashlib.sha256(raw.encode('utf-8')).hexdigest()[:16]
@@ -208,6 +263,12 @@ def track_visit(response):
     user_agent = (request.headers.get('User-Agent') or '').strip()
     referer = (request.headers.get('Referer') or '').strip()
     country, city = get_country_city_from_headers()
+    if country == 'Unknown' or city == 'Unknown':
+        local_country, local_city = get_country_city_from_local_geoip(ip)
+        if country == 'Unknown' and local_country != 'Unknown':
+            country = local_country
+        if city == 'Unknown' and local_city != 'Unknown':
+            city = local_city
 
     row = [
         now.strftime('%Y-%m-%d %H:%M:%S'),
