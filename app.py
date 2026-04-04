@@ -433,17 +433,32 @@ def analytics_dashboard():
             return jsonify({'error': 'Unauthorized'}), 401
 
     rows = load_analytics_rows(limit=ANALYTICS_MAX_ROWS)
-    total_visits = len(rows)
     unique_visitors = len({r.get('visitor_id', '') for r in rows if r.get('visitor_id')})
 
+    seen_sessions = set()
     country_counter = Counter()
     city_counter = Counter()
     path_counter = Counter()
 
     for row in rows:
-        country_counter[(row.get('country') or 'Unknown').strip() or 'Unknown'] += 1
-        city_counter[(row.get('city') or 'Unknown').strip() or 'Unknown'] += 1
-        path_counter[(row.get('path') or '/').strip() or '/'] += 1
+        vid = row.get('visitor_id', '')
+        date = (row.get('timestamp') or '')[:10]
+        session_key = f"{vid}|{date}"
+
+        country = (row.get('country') or '').strip()
+        city = (row.get('city') or '').strip()
+        path = (row.get('path') or '/').strip() or '/'
+
+        path_counter[path] += 1
+
+        if session_key not in seen_sessions:
+            seen_sessions.add(session_key)
+            if country and country.upper() != 'UNKNOWN':
+                country_counter[country] += 1
+            if city and city.upper() != 'UNKNOWN':
+                city_counter[city] += 1
+
+    total_visits = len(seen_sessions)
 
     known_rows = [r for r in rows if (r.get('country') or '').strip().upper() != 'UNKNOWN']
     recent_rows = known_rows[:ANALYTICS_MAX_RECENT_ROWS]
