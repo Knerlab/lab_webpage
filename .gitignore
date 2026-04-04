@@ -1,0 +1,9 @@
+# GeoIP database
+*.mmdb
+
+# Analytics data (visitor logs, sensitive)
+analytics_data/
+
+# Python cache
+__pycache__/
+*.pyc
