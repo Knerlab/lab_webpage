@@ -122,7 +122,7 @@ os.makedirs(JOURNALCLUB_DRAW_DIR, exist_ok=True)
 
 ANALYTICS_DIR = os.path.join(os.path.dirname(__file__), 'analytics_data')
 ANALYTICS_MAX_ROWS = 15000
-ANALYTICS_MAX_RECENT_ROWS = 80
+ANALYTICS_MAX_RECENT_ROWS = 100
 ANALYTICS_ADMIN_TOKEN = os.environ.get('ANALYTICS_ADMIN_TOKEN', '').strip()
 ANALYTICS_GEOIP_DB_PATH = os.environ.get(
     'ANALYTICS_GEOIP_DB_PATH',
@@ -308,6 +308,10 @@ def track_visit(response):
         if city == 'Unknown' and local_city != 'Unknown':
             city = local_city
 
+    # Skip recording visits with no country info (direct IP access, unresolved geo)
+    if country == 'Unknown':
+        return
+
     row = [
         now.strftime('%Y-%m-%d %H:%M:%S'),
         request.path or '',
@@ -441,7 +445,8 @@ def analytics_dashboard():
         city_counter[(row.get('city') or 'Unknown').strip() or 'Unknown'] += 1
         path_counter[(row.get('path') or '/').strip() or '/'] += 1
 
-    recent_rows = rows[:ANALYTICS_MAX_RECENT_ROWS]
+    known_rows = [r for r in rows if (r.get('country') or '').strip().upper() != 'UNKNOWN']
+    recent_rows = known_rows[:ANALYTICS_MAX_RECENT_ROWS]
 
     return render_template(
         'analytics.html',

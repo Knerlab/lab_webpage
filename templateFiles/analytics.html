@@ -25,6 +25,18 @@
         .mono { font-family: Consolas, Monaco, monospace; }
         .privacy-note { margin-top: 16px; color: #9ca3af; font-size: 0.9rem; }
         @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+        .row-btn {
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            color: #9ca3af;
+            padding: 5px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+        .row-btn:hover { border-color: #3cae71; color: #e5e7eb; }
+        .row-btn.active { background: #3cae71; border-color: #3cae71; color: #fff; font-weight: 600; }
     </style>
 </head>
 <body>
@@ -113,8 +125,15 @@
         </section>
 
         <section class="card">
-            <h2 class="panel-title">Recent Visits</h2>
-            <table>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                <h2 class="panel-title" style="margin:0;">Recent Visits</h2>
+                <div id="rowSelector" style="display:flex; gap:6px;">
+                    <button class="row-btn active" data-count="10">10</button>
+                    <button class="row-btn" data-count="50">50</button>
+                    <button class="row-btn" data-count="100">100</button>
+                </div>
+            </div>
+            <table id="recentTable">
                 <thead>
                     <tr>
                         <th>Timestamp</th>
@@ -126,7 +145,7 @@
                 </thead>
                 <tbody>
                 {% for row in recent_rows %}
-                    <tr>
+                    <tr class="visit-row">
                         <td>{{ row.timestamp }}</td>
                         <td class="mono">{{ row.path }}</td>
                         <td class="mono">{{ row.ip_masked }}</td>
@@ -146,6 +165,22 @@
     </main>
 
     <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+    <script>
+        (function () {
+            const btns = document.querySelectorAll('.row-btn');
+            const rows = document.querySelectorAll('.visit-row');
+            function applyLimit(n) {
+                rows.forEach((row, i) => {
+                    row.style.display = i < n ? '' : 'none';
+                });
+                btns.forEach(b => b.classList.toggle('active', Number(b.dataset.count) === n));
+            }
+            applyLimit(10);
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => applyLimit(Number(btn.dataset.count)));
+            });
+        })();
+    </script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         (function () {
