@@ -236,13 +236,24 @@
                 return;
             }
 
+            // Custom tooltip div — follows mouse cursor instead of geo centroid
+            const tip = document.createElement('div');
+            tip.style.cssText = [
+                'position:fixed', 'display:none', 'z-index:9999',
+                'background:#1a1a1a', 'border:1px solid #3cae71',
+                'color:#e5e7eb', 'font-size:13px',
+                'padding:5px 12px', 'border-radius:6px',
+                'pointer-events:none', 'white-space:nowrap'
+            ].join(';');
+            document.body.appendChild(tip);
+
             const trace = {
                 type: 'choropleth',
                 locationmode: 'ISO-3',
                 locations: locations,
                 z: zValues,
                 text: textLabels,
-                hovertemplate: '%{text}<extra></extra>',
+                hoverinfo: 'none',
                 colorscale: [
                     [0,   '#1a3a28'],
                     [0.3, '#2d7a50'],
@@ -259,18 +270,13 @@
                     thickness: 12,
                     len: 0.6
                 },
-                hoverlabel: {
-                    bgcolor: '#1a1a1a',
-                    bordercolor: '#3cae71',
-                    font: { color: '#e5e7eb', size: 13 }
-                },
                 marker: { line: { color: '#2d2d2d', width: 0.4 } }
             };
 
             const layout = {
                 paper_bgcolor: '#0c0c0c',
                 plot_bgcolor: '#0c0c0c',
-                margin: { l: 0, r: 0, t: 40, b: 0 },
+                margin: { l: 0, r: 0, t: 0, b: 0 },
                 geo: {
                     showframe: false,
                     showcoastlines: false,
@@ -291,6 +297,23 @@
                 displayModeBar: false,
                 responsive: true,
                 scrollZoom: false
+            });
+
+            el.addEventListener('mousemove', (e) => {
+                tip.style.left = (e.clientX + 14) + 'px';
+                tip.style.top  = (e.clientY - 10) + 'px';
+            });
+
+            el.on('plotly_hover', (data) => {
+                const pt = data.points[0];
+                if (pt) {
+                    tip.textContent = pt.text;
+                    tip.style.display = 'block';
+                }
+            });
+
+            el.on('plotly_unhover', () => {
+                tip.style.display = 'none';
             });
         })();
     </script>
