@@ -133,6 +133,30 @@ _analytics_lock = threading.Lock()
 _geoip_reader = None
 _geoip_checked = False
 
+# ---- Bot / attack filtering ----
+# Known bot, crawler, and scanner user-agent keywords (case-insensitive)
+_BOT_UA_RE = re.compile(
+    r'(bot|crawl|spider|slurp|scanner|python-requests|python-urllib|'
+    r'curl|wget|go-http-client|java/|ruby|perl/|'
+    r'masscan|nikto|nmap|sqlmap|zgrab|nuclei|httpx|dirsearch|gobuster|'
+    r'semrushbot|ahrefsbot|mj12bot|dotbot|baiduspider|yandexbot|'
+    r'seznambot|petalbot|bytespider|claudebot|gptbot|chatgpt-user|'
+    r'anthropic-ai|dataforseo|paloaltonetworks|nessus|openvas)',
+    re.IGNORECASE
+)
+
+# Paths typical of automated scanners and vulnerability probes
+_ATTACK_PATH_RE = re.compile(
+    r'(/\.env|/\.git|/\.ds_store|/wp-|/wordpress|/phpmyadmin|/admin\.php|'
+    r'/xmlrpc\.php|/cgi-bin|/shell|/cmd|/config\.|/setup\.|'
+    r'/install\.|/backup|/dump|/db\.|/sql\.|'
+    r'/v2/|/v1/|/api/v[0-9]|'
+    r'/login\.action|/server-status|/server$|/console|/actuator|'
+    r'/about$|/info$|/health$|/metrics$|/manager|/solr|/jenkins|'
+    r'\.(php|asp|aspx|jsp|cgi|sh|pl|py|rb|cfm)(\?.*)?$)',
+    re.IGNORECASE
+)
+
 
 def get_client_ip():
     xff = (request.headers.get('X-Forwarded-For') or '').strip()
@@ -249,11 +273,25 @@ def should_track_request():
         return False
     if path.startswith('/admin/analytics'):
         return False
+
+    # Drop known attack/probe paths
+    if _ATTACK_PATH_RE.search(path):
+        return False
+
+    # Drop empty or known bot/scanner user agents
+    ua = (request.headers.get('User-Agent') or '').strip()
+    if not ua or _BOT_UA_RE.search(ua):
+        return False
+
     return True
 
 
 def track_visit(response):
     if not should_track_request():
+        return
+
+    # Drop 4xx / 5xx — bot probes almost always land on non-existent paths
+    if response.status_code >= 400:
         return
 
     now = datetime.now()
