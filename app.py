@@ -11,6 +11,9 @@ import ipaddress
 from pdb import set_trace as st
 import re
 from datetime import datetime
+from zoneinfo import ZoneInfo
+
+NY_TZ = ZoneInfo('America/New_York')
 from collections import Counter
 
 ######################################################################################################################################################
@@ -294,7 +297,7 @@ def track_visit(response):
     if response.status_code >= 400:
         return
 
-    now = datetime.now()
+    now = datetime.now(tz=NY_TZ)
     path = analytics_csv_path(now)
 
     ip = get_client_ip()
